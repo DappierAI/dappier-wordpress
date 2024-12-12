@@ -1,0 +1,16 @@
+{
+	"name": "dappier",
+	"version": "1.0.0",
+	"description": "Integrate Dappier AI on your WordPress site.",
+	"main": "index.js",
+	"scripts": {
+		"dev": "mix",
+		"production": "mix --production",
+		"watch": "mix watch"
+	},
+	"author": "Dappier",
+	"license": "MIT",
+	"devDependencies": {
+		"laravel-mix": "^6.0.0"
+	}
+}
