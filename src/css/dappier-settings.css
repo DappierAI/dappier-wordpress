@@ -1,0 +1,348 @@
+:root {
+	--color-primary: rgba(131, 83, 226, 1);
+	--color-primary-light: rgba(131, 83, 226, .9);
+	--color-primary-neutral: #e4daf8;
+	--color-neutral: rgba(243, 244, 246, 1);
+	--color-body: #1d2327;
+	--color-link: #678af9;
+	--color-notice: rgba(0, 0, 0, 0.87);
+	--color-success: rgba(167, 250, 172, 1);
+	--color-error: rgba(255, 0, 0, 1);
+	--border-radius: 12px;
+}
+
+#wpcontent {
+	background-color: white;
+}
+
+#wpbody {
+	max-width: 1200px;
+	height: calc(100dvh - var(--wp-admin--admin-bar--height));
+	margin-inline: auto;
+}
+
+.dappier-header {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 32px 16px;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 24px;
+	padding-block: 24px 34px; /* bottom margin is 24px + 10px from `.wrap` top margin from WP */
+	border-bottom: 2px solid var(--color-neutral);
+}
+
+.dappier-logo {
+	max-width: 240px;
+	margin: 0;
+}
+
+.dappier-logo__img {
+	display: block;
+	width: 100%;
+}
+
+.dappier-header__content {
+
+	h2 {
+		margin: 0 0 8px;
+	}
+}
+
+.dappier-inner {
+	display: grid;
+	gap: 2em;
+	align-items: start;
+
+	p {
+		margin: 0 0 1em;
+		padding: 0;
+	}
+
+	a {
+		color: var(--color-link);
+	}
+
+	a:focus {
+		/* match/override WP core button styles */
+		color: currentColor;
+		box-shadow: 0 0 0 2px var(--color-primary);
+		outline: 2px solid transparent;
+	}
+
+	a:hover,
+	a:focus-visible {
+		color: var(--color-primary);
+	}
+
+	::placeholder {
+		opacity: .6;
+	}
+
+	input[type="text"]:focus,
+	input[type="password"]:focus,
+	input[type="color"]:focus,
+	input[type="date"]:focus,
+	input[type="datetime"]:focus,
+	input[type="datetime-local"]:focus,
+	input[type="email"]:focus,
+	input[type="month"]:focus,
+	input[type="number"]:focus,
+	input[type="search"]:focus,
+	input[type="tel"]:focus,
+	input[type="time"]:focus,
+	input[type="url"]:focus,
+	input[type="week"]:focus,
+	input[type="checkbox"]:focus,
+	input[type="radio"]:focus,
+	select:focus,
+	textarea:focus {
+		border-color: var(--color-body);
+		box-shadow: 0 0 0 1px var(--color-body);
+		outline: 2px solid transparent;
+	}
+
+	input[type="text"]:focus-visible,
+	input[type="password"]:focus-visible,
+	input[type="color"]:focus-visible,
+	input[type="date"]:focus-visible,
+	input[type="datetime"]:focus-visible,
+	input[type="datetime-local"]:focus-visible,
+	input[type="email"]:focus-visible,
+	input[type="month"]:focus-visible,
+	input[type="number"]:focus-visible,
+	input[type="search"]:focus-visible,
+	input[type="tel"]:focus-visible,
+	input[type="time"]:focus-visible,
+	input[type="url"]:focus-visible,
+	input[type="week"]:focus-visible,
+	input[type="checkbox"]:focus-visible,
+	input[type="radio"]:focus-visible,
+	select:focus-visible,
+	textarea:focus-visible {
+		border: none;
+		box-shadow: 0 0 0 1px var(--color-primary);
+		outline: 2px solid transparent;
+	}
+
+	/* p:where(:not(:last-child)) {
+		margin: 0 0 1em;
+		padding: 0;
+	} */
+
+	/* p:where(:last-child) {
+		margin: 0;
+		padding: 0;
+	} */
+}
+
+@media only screen and (min-width: 800px) {
+
+	.dappier-inner {
+		grid-template-columns: 1fr 350px;
+	}
+}
+
+.dappier-inner:not(.dappier-inner__active) {
+
+	.dappier-step__three,
+	.dappier-step__four,
+	.dappier-step__five {
+		display: none;
+	}
+}
+
+.dappier-inner__active {
+
+	.dappier-step__one,
+	.dappier-step__two {
+		display: none;
+	}
+}
+
+.dappier-form,
+.dappier-inner__sidebar {
+	margin-top: 36px;
+}
+
+.dappier-form {
+	display: grid;
+	gap: 24px;
+}
+
+.dappier-preheading {
+	margin-bottom: 8px;
+	color: var(--color-primary);
+	font-size: 1.1em;
+	font-weight: bold;
+}
+
+.dappier-step__inner {
+	margin: 0;
+	border: 2px solid var(--color-neutral);
+	border-radius: var(--border-radius);
+	overflow: hidden; /* for border radius */
+}
+
+.dappier-heading {
+	display: flex;
+	gap: 16px;
+	margin: 0;
+	padding: 8px 12px;
+	font-size: 1.2em;
+	background-color: var(--color-neutral);
+}
+
+.dappier-step__content {
+	padding: 16px;
+
+	.form-table,
+	.form-table :where(tbody, thead, tfoot, tr, th, td) {
+		display: block;
+		width: 100%;
+	}
+
+	.form-table th,
+	.form-table td {
+		padding: 0;
+	}
+
+	.form-table th {
+		margin: 0 0 8px;
+	}
+
+	.form-table td {
+		margin: 0 0 16px;
+	}
+
+	ul a {
+		text-decoration: none;
+	}
+
+	ul a:hover,
+	ul a:focus-visible {
+		text-decoration: underline;
+	}
+}
+
+.dappier-step__field {
+	display: grid;
+	gap: .2em;
+	max-width: 30em;
+	margin-block: 4px 16px;
+
+	input:not(.button),
+	textarea {
+		display: block;
+		width: 100%;
+		margin-top: 4px;
+	}
+}
+
+.dappier-step__label {
+	display: block;
+}
+
+.dappier-step__desc {
+	margin: 0;
+	font-size: 95%;
+	opacity: .8;
+}
+
+.dappier-step_sidebar {
+	border-radius: var(--border-radius);
+}
+
+.dappier-step__inner + .dappier-step__inner {
+	margin-top: 24px;
+}
+
+.dappier-step__details {
+	display: table;
+
+	li {
+		display: table-row;
+
+		span {
+			display: table-cell;
+			padding: 4px;
+		}
+	}
+}
+
+p.submit {
+	margin: 0 0 1em;
+	padding: 0;
+}
+
+.dappier-callout {
+	position: relative;
+	margin-bottom: 16px;
+	padding: 24px 24px 24px 48px;
+	background-color: var(--color-primary-neutral);
+	border-radius: 12px;
+}
+
+.dappier-callout::before {
+	position: absolute;
+	top: 16px;
+	left: 16px;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	background-color: gold;
+	background: linear-gradient(in lch 135deg, #c668ff, #7badff);
+	mask-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"/></svg>');
+	/* mask-image: url('data:image/svg+xml;charset=UTF-8,<?xml version="1.0" ?><svg viewBox="0 0 20 30" xmlns="http://www.w3.org/2000/svg"><title/><g data-name="Layer 2" id="Layer_2"><g id="Interface-Solid"><g id="interface-solid-award-medal-2"><path d="M10,20a9.92593,9.92593,0,0,1-5.331-1.55469L2.59686,26.73364,9.44531,22.168a.99746.99746,0,0,1,1.10938,0l6.84845,4.56567-2.07209-8.28833A9.92593,9.92593,0,0,1,10,20Z" fill="none"/><path d="M7.27026,11.08154a.5552.5552,0,0,1,.17743.571l-.71551,2.658A.523.523,0,0,0,7.517,14.907l2.196-1.533a.49741.49741,0,0,1,.5741,0l2.196,1.533a.523.523,0,0,0,.78479-.59643l-.71551-2.658a.5552.5552,0,0,1,.17743-.571l2.07263-1.71045a.54568.54568,0,0,0-.29975-.96484L11.8645,8.29639A.51955.51955,0,0,1,11.4,7.9436l-.915-2.59033a.50965.50965,0,0,0-.9701,0L8.6,7.9436a.51955.51955,0,0,1-.46448.35279l-2.63812.10986a.54568.54568,0,0,0-.29975.96484Z" fill="none"/><path d="M19.9707,28.7793c-.00164-.00733.00086-.01416-.001-.02149L17.051,17.08276a10,10,0,1,0-14.10192,0L.03027,28.75781c-.00183.00733.00067.01416-.001.02149a.99127.99127,0,0,0-.01117.23828,1.00522,1.00522,0,0,0-.0008.1521,1.01338,1.01338,0,0,0,.05591.15405.99042.99042,0,0,0,.08563.20874c.0044.00708.00446.01538.0091.02222a.93678.93678,0,0,0,.106.10571.96854.96854,0,0,0,.15234.15186.97071.97071,0,0,0,.202.09594.97359.97359,0,0,0,.12958.06153c.00983.00244.01966.00146.02948.00366.01752.00366.03479.00366.05249.00659A1.02224,1.02224,0,0,0,1.001,30a.9487.9487,0,0,0,.11108-.01855A.95815.95815,0,0,0,1.23987,29.96a.9891.9891,0,0,0,.23968-.09741c.0243-.01343.05158-.01489.07514-.03052L10,24.20215,18.44531,29.832a185.62391,185.62391,0,0,1,.24909.11694A.99354.99354,0,0,0,18.999,30a1.005,1.005,0,0,0,.243-.03027h.00019l.00042-.00025a.99433.99433,0,0,0,.32215-.15307c.01868-.01294.03741-.02393.05505-.03809a.98177.98177,0,0,0,.21222-.22363c.00464-.00684.0047-.01514.0091-.02222a.99042.99042,0,0,0,.08563-.20874.4494.4494,0,0,0,.05511-.30615A.99127.99127,0,0,0,19.9707,28.7793ZM5.49738,8.40625,8.1355,8.29639A.51955.51955,0,0,0,8.6,7.9436l.915-2.59033a.50965.50965,0,0,1,.9701,0L11.4,7.9436a.51955.51955,0,0,0,.46448.35279l2.63812.10986a.54568.54568,0,0,1,.29975.96484l-2.07263,1.71045a.5552.5552,0,0,0-.17743.571l.71551,2.658a.523.523,0,0,1-.78479.59643l-2.196-1.533a.49741.49741,0,0,0-.5741,0L7.517,14.907a.523.523,0,0,1-.78479-.59643l.71551-2.658a.5552.5552,0,0,0-.17743-.571L5.19763,9.37109A.54568.54568,0,0,1,5.49738,8.40625ZM10.55469,22.168a.99746.99746,0,0,0-1.10938,0L2.59686,26.73364,4.669,18.44531a9.91746,9.91746,0,0,0,10.6621,0l2.07209,8.28833Z"/></g></g></g></svg>'); */
+	mask-repeat: no-repeat;
+	mask-size: contain;
+	filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.2));
+	content: "";
+}
+
+.wp-core-ui {
+
+	.button:not([class*="wp-color-"]):not([class*="wp-picker-"]),
+	.button:not([class*="wp-color-"]):not([class*="wp-picker-"]):focus,
+	.button:not([class*="wp-color-"]):not([class*="wp-picker-"]):focus-visible {
+		margin: 0;
+		padding: 6px 16px;
+		background-color: var(--color-primary);
+		color: rgb(255, 255, 255);
+		border: none;
+		border-radius: 5px;
+		transition: all .2s ease-in-out;
+	}
+
+	.button:not([class*="wp-color-"]):not([class*="wp-picker-"]):focus,
+	.button:not([class*="wp-color-"]):not([class*="wp-picker-"]):focus-visible {
+		/* match/override WP core button styles */
+		box-shadow: 0 0 0 1px #fff, 0 0 0 3px var(--color-primary);
+		outline: 2px solid transparent;
+	}
+
+	.button:not([class*="wp-color-"]):not([class*="wp-picker-"]):active,
+	.button:not([class*="wp-color-"]):not([class*="wp-picker-"]):hover,
+	.button:not([class*="wp-color-"]):not([class*="wp-picker-"]):focus,
+	.button:not([class*="wp-color-"]):not([class*="wp-picker-"]):focus-visible {
+		background-color: var(--color-primary-light);
+	}
+
+	.button[class*="wp-color-"],
+	.button[class*="wp-picker-"] {
+		border-color: rgba(0, 0, 0, 0.2);
+	}
+
+	.button[class*="wp-color-"]:active,
+	.button[class*="wp-color-"]:hover,
+	.button[class*="wp-color-"]:focus,
+	.button[class*="wp-color-"]:focus-visible,
+	.button[class*="wp-picker-"]:active,
+	.button[class*="wp-picker-"]:hover,
+	.button[class*="wp-picker-"]:focus,
+	.button[class*="wp-picker-"]:focus-visible {
+		border: 1px solid var(--color-primary);
+		box-shadow: none;
+		outline: 1px solid var(--color-primary);
+	}
+}
