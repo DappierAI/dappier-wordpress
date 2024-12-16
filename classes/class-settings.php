@@ -510,10 +510,10 @@ class Dappier_Settings {
 				// Start form.
 				echo '<form class="dappier-form" method="post" action="options.php">';
 					// If forced inactive.
-					if ( ! $active && dappier_is_configured() ) {
+					if ( ! $active && dappier_get_option( 'api_key' ) ) {
 						echo '<div class="dappier-callout">';
 							echo '<div style="display:flex;flex-wrap:nowrap;justify-content:space-between;align-items:center;gap:36px;">';
-								printf( '<p style="margin:0;font-size:1.25em;text-wrap:balance;"><strong>%s</strong></p>', __( 'Your account is successfully connected, go configure your settings!', 'dappier' ) );
+								printf( '<p style="margin:0;font-size:1.25em;text-wrap:balance;"><strong>%s</strong></p>', __( 'Your API key is saved, go configure your settings!', 'dappier' ) );
 								printf( '<a href="%s" class="button button-primary">%s</a>', admin_url( 'admin.php?page=dappier' ), __( 'Configure Now →', 'dappier' ) );
 							echo '</div>';
 						echo '</div>';
@@ -599,7 +599,7 @@ class Dappier_Settings {
 								if ( $aimodel_id ) {
 									printf( '<p><a href="https://platform.dappier.com/my-ai-config/%s?tab=datamodel" class="button button-primary">%s</a></p>', $aimodel_id, __( 'Publish your data to Dappier\'s marketplace', 'dappier' ) );
 								} else {
-									printf( '<p><button class="button button-primary" disabled>%s</button></p>', __( 'Please create or choose your AI Agent', 'dappier' ) );
+									printf( '<p><button class="button button-primary" disabled>%s</button></p>', __( 'Please create or choose your AI Agent above', 'dappier' ) );
 								}
 							echo '</div>';
 						echo '</div>';
@@ -963,6 +963,14 @@ class Dappier_Settings {
 
 		// Bail if no agent data.
 		if ( ! ( $name && $desc && $pers ) ) {
+			// Add a settings error with a unique error code.
+			add_settings_error(
+				'dappier',
+				'get_agent_error_create_agent',
+				__( 'Error Creating Agent: All fields are required', 'dappier' ),
+				'error'
+			);
+
 			return $value;
 		}
 
