@@ -8,8 +8,8 @@ document.addEventListener( 'DOMContentLoaded', function() {
 	const agentPersonaInput = document.getElementById('agent_persona');
 	const colorFields       = document.querySelectorAll('.dappier-color-picker');
 
-	// If no agents exist, the default is to create. Show fields and set as required.
-	if ( '_create_agent' === aiModel.value ) {
+	// If no agents exist and agentPersona field section is not hidden, the default is to create. Show fields and set as required.
+	if ( '_create_agent' === aiModel.value && 'none' !== agentPersona.style.display ) {
 		toggleFields( 'block', true );
 	}
 
