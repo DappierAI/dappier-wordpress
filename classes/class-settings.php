@@ -311,7 +311,7 @@ class Dappier_Settings {
 		$value = dappier_get_option( 'agent_name' );
 		$value = ! $this->get_agents() ? get_bloginfo( 'name' ) : $value;
 
-		echo '<div style="display:none;" class="dappier-step__field agent_name">';
+		echo '<div class="dappier-step__field agent_name">';
 			printf( '<label class="dappier-step__label" for="dappier[agent_name]">%s</label>', __( 'Name (required)', 'dappier' ) );
 			printf( '<p class="dappier-step__desc">%s</p>', __( 'Give your AI agent a name.', 'dappier' ) );
 			printf( '<input class="dappier-step__input" type="text" name="dappier[agent_name]" id="agent_name" placeholder="%s" value="%s">',
@@ -332,7 +332,7 @@ class Dappier_Settings {
 		$value = dappier_get_option( 'agent_desc' );
 		$value = ! $this->get_agents() ? get_bloginfo( 'description' ) : $value;
 
-		echo '<div style="display:none;" class="dappier-step__field agent_desc">';
+		echo '<div class="dappier-step__field agent_desc">';
 			printf( '<label class="dappier-step__label" for="dappier[agent_desc]">%s</label>', __( 'Description (required)', 'dappier' ) );
 			printf( '<p class="dappier-step__desc">%s</p>', __( 'Add a short description of what this AI Agent can do.', 'dappier' ) );
 			printf( '<textarea id="agent_desc" class="dappier-step__input" name="dappier[agent_desc]" rows="3" placeholder="%s">%s</textarea>',
@@ -352,7 +352,7 @@ class Dappier_Settings {
 	function agent_persona_callback() {
 		$value = dappier_get_option( 'agent_persona' );
 
-		echo '<div style="display:none;" class="dappier-step__field agent_persona">';
+		echo '<div class="dappier-step__field agent_persona">';
 			printf( '<label class="dappier-step__label" for="dappier[agent_persona]">%s</label>', __( 'Persona (required)', 'dappier' ) );
 			printf( '<p class="dappier-step__desc">%s</p>', __( 'How should this AI Agent answer questions? What does it do? What should it not do?', 'dappier' ) );
 			printf( '<textarea class="dappier-step__input" name="dappier[agent_persona]" id="agent_persona" rows="3" placeholder="%s">%s</textarea>',
