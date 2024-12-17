@@ -65,10 +65,20 @@ class Dappier_Settings {
 			return;
 		}
 
+		// WordPress media uploader scripts.
+		if ( ! did_action( 'wp_enqueue_media' ) ) {
+			wp_enqueue_media();
+		}
+
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_script( 'wp-color-picker' );
 		wp_enqueue_style( 'dappier-settings', dappier_get_file_url( 'dappier-settings', 'css' ), [], DAPPIER_PLUGIN_VERSION );
 		wp_enqueue_script( 'dappier-settings', dappier_get_file_url( 'dappier-settings', 'js' ), [ 'jquery', 'wp-color-picker' ], DAPPIER_PLUGIN_VERSION, true );
+		wp_localize_script( 'dappier-settings', 'dappierSettings', [
+			'ajaxUrl'       => admin_url( 'admin-ajax.php' ),
+			'uploaderTitle' => __( 'Insert image', 'dappier' ),
+			'buttonText'    => __( 'Use this image', 'dappier' ),
+		] );
 	}
 
 	/**
@@ -152,7 +162,7 @@ class Dappier_Settings {
 			'dappier_three' // section
 		);
 
-		// Module Location.
+		// AskAI Location.
 		add_settings_field(
 			'askai_location', // id
 			'', // title
@@ -161,7 +171,7 @@ class Dappier_Settings {
 			'dappier_four' // section
 		);
 
-		// Module Background Color.
+		// AskAI Background Color.
 		add_settings_field(
 			'askai_bg_color', // id
 			'', // title
@@ -170,7 +180,7 @@ class Dappier_Settings {
 			'dappier_four' // section
 		);
 
-		// Module Text Color.
+		// AskAI Text Color.
 		add_settings_field(
 			'askai_fg_color', // id
 			'', // title
@@ -179,11 +189,29 @@ class Dappier_Settings {
 			'dappier_four' // section
 		);
 
-		// Module Theme Color.
+		// AskAI Theme Color.
 		add_settings_field(
 			'askai_theme_color', // id
 			'', // title
 			[ $this, 'askai_theme_color_callback' ], // callback
+			'dappier', // page
+			'dappier_four' // section
+		);
+
+		// AskAI Logo.
+		add_settings_field(
+			'askai_logo', // id
+			'', // title
+			[ $this, 'askai_logo_callback' ], // callback
+			'dappier', // page
+			'dappier_four' // section
+		);
+
+		// AskAI Icon.
+		add_settings_field(
+			'askai_icon', // id
+			'', // title
+			[ $this, 'askai_icon_callback' ], // callback
 			'dappier', // page
 			'dappier_four' // section
 		);
@@ -209,6 +237,8 @@ class Dappier_Settings {
 			'askai_bg_color'    => 'sanitize_text_field',
 			'askai_fg_color'    => 'sanitize_text_field',
 			'askai_theme_color' => 'sanitize_text_field',
+			'askai_logo'        => 'absint',
+			'askai_icon'        => 'absint',
 		];
 
 		// Get an array of matching keys from $input.
@@ -373,8 +403,8 @@ class Dappier_Settings {
 		$value = dappier_get_option( 'askai_location' );
 
 		echo '<div class="dappier-step__field">';
-			printf( '<label class="dappier-step__label" for="dappier[askai_location]">%s</label>', __( 'Module Location', 'dappier' ) );
-			printf( '<p class="dappier-step__desc">%s</p>', __( 'Select where you would like the AI askai to appear on your site. Use [dappier_askai] shortcode to manually display the askai.', 'dappier' ) );
+			printf( '<label class="dappier-step__label" for="dappier[askai_location]">%s</label>', __( 'AskAI Location', 'dappier' ) );
+			printf( '<p class="dappier-step__desc">%s</p>', __( 'Select where you would like the AskAI to appear on your site. Use [dappier_askai] shortcode to manually display the askai.', 'dappier' ) );
 
 			echo '<select class="dappier-step__input" name="dappier[askai_location]" id="askai_location">';
 				$options = [
@@ -403,7 +433,7 @@ class Dappier_Settings {
 		$value = ! is_null( $value ) ? $value : '#f8f9fa';
 
 		echo '<div class="dappier-step__field">';
-			printf( '<label class="dappier-step__label" for="dappier[askai_bg_color]">%s</label>', __( 'Module Background Color', 'dappier' ) );
+			printf( '<label class="dappier-step__label" for="dappier[askai_bg_color]">%s</label>', __( 'AskAI Background Color', 'dappier' ) );
 			// printf( '<p class="dappier-step__desc">%s</p>', __( 'Set the background color for the AI askai.', 'dappier' ) );
 			printf( '<input class="dappier-step__input dappier-color-picker" type="text" name="dappier[askai_bg_color]" id="askai_bg_color" value="%s">', $value );
 		echo '</div>';
@@ -420,7 +450,7 @@ class Dappier_Settings {
 		$value = dappier_get_option( 'askai_fg_color' );
 
 		echo '<div class="dappier-step__field">';
-			printf( '<label class="dappier-step__label" for="dappier[askai_fg_color]">%s</label>', __( 'Module Text Color', 'dappier' ) );
+			printf( '<label class="dappier-step__label" for="dappier[askai_fg_color]">%s</label>', __( 'AskAI Text Color', 'dappier' ) );
 			// printf( '<p class="dappier-step__desc">%s</p>', __( 'Set the text color for the AI askai.', 'dappier' ) );
 			printf( '<input class="dappier-step__input dappier-color-picker" type="text" name="dappier[askai_fg_color]" id="askai_fg_color" value="%s">', $value );
 		echo '</div>';
@@ -438,9 +468,60 @@ class Dappier_Settings {
 		$value = ! is_null( $value ) ? $value : '#674ad9';
 
 		echo '<div class="dappier-step__field">';
-			printf( '<label class="dappier-step__label" for="dappier[askai_theme_color]">%s</label>', __( 'Module Theme Color', 'dappier' ) );
+			printf( '<label class="dappier-step__label" for="dappier[askai_theme_color]">%s</label>', __( 'AskAI Theme Color', 'dappier' ) );
 			// printf( '<p class="dappier-step__desc">%s</p>', __( 'Set the theme color for the AI askai.', 'dappier' ) );
 			printf( '<input class="dappier-step__input dappier-color-picker" type="text" name="dappier[askai_theme_color]" id="askai_theme_color" value="%s">', $value );
+		echo '</div>';
+	}
+
+	/**
+	 * Setting callback.
+	 *
+	 * @since TBD
+	 *
+	 * @return void
+	 */
+	function askai_logo_callback() {
+		echo $this->get_media_upload_field( 'askai_logo', __( 'AskAI Logo', 'dappier' ) );
+	}
+
+	/**
+	 * Setting callback.
+	 *
+	 * @since TBD
+	 *
+	 * @return void
+	 */
+	function askai_icon_callback() {
+		echo $this->get_media_upload_field( 'askai_icon', __( 'AskAI Chat Icon', 'dappier' ) );
+	}
+
+	/**
+	 * Get a media upload field.
+	 *
+	 * @param string $key The option key.
+	 *
+	 * @return void
+	 */
+	function get_media_upload_field( $key, $label ) {
+		$key       = esc_attr( $key );
+		$label     = esc_html( $label );
+		$image_id  = dappier_get_option( $key );
+		$image_url = $image_id ? wp_get_attachment_image_url( $image_id, 'medium' ) : '';
+
+		echo '<div class="dappier-step__field">';
+			printf( '<label class="dappier-step__label" for="dappier[%s]">%s</label>', $key, $label );
+			echo '<div class="dappier-media__container">';
+				if ( $image_url ) {
+					printf( '<a href="#" class="dappier-media__upload"><img src="%s"/></a>', esc_url( $image_url ) );
+					printf( '<a href="#" class="dappier-media__remove">%s</a>', __( 'Remove', 'dappier' ) );
+					printf( '<input type="hidden" name="dappier[%s]" value="%s">', $key, absint( $image_id ) );
+				} else {
+					printf( '<a href="#" class="button button-media dappier-media__upload">%s</a>', __( 'Upload image', 'dappier' ) );
+					printf( '<a href="#" class="dappier-media__remove" style="display:none">%s</a>', __( 'Remove', 'dappier' ) );
+					printf( '<input type="hidden" name="dappier[%s]" value="">', $key );
+				}
+			echo '</div>';
 		echo '</div>';
 	}
 
@@ -565,7 +646,7 @@ class Dappier_Settings {
 						echo '<div class="dappier-step__inner">';
 							printf( '<h3 class="dappier-heading">%s</h3>', __( 'Create or choose your default AI Agent', 'dappier' ) );
 							echo '<div class="dappier-step__content">';
-								printf( '<p>%s</p>', __( 'To get started, create or link an existing AI agent with your content.', 'dappier' ) );
+								printf( '<p>%s</p>', __( 'To get started, create or link an existing AskAI agent with your content.', 'dappier' ) );
 								printf( '<p>%s</p>', __( 'Follow the steps below. The setup only takes a few minutes.', 'dappier' ) );
 								printf( '<div class="dappier-callout">%s</div>', __( 'We\'ll securely generate a private AI model, stored in a multi-tenant system. This model will power the Ask AI chatbot and AI-powered recommendations on your site.', 'dappier' ) );
 								do_settings_fields( 'dappier', 'dappier_three');
@@ -580,7 +661,6 @@ class Dappier_Settings {
 						echo '<div class="dappier-step__inner">';
 							printf( '<h3 class="dappier-heading">%s</h3>', __( 'Configure your site', 'dappier' ) );
 							echo '<div class="dappier-step__content">';
-								printf( '<p>%s</p>', __( 'To get started, create or link an existing AI agent with your content.', 'dappier' ) );
 								printf( '<p>%s</p>', __( 'Follow the steps below. The setup only takes a few minutes.', 'dappier' ) );
 								// printf( '<p><a href="%s" class="button button-primary">%s</a></p>', '#', __( 'Configure Site', 'dappier' ) );
 								do_settings_fields( 'dappier', 'dappier_four');
@@ -902,12 +982,13 @@ class Dappier_Settings {
 		// Get the data.
 		$aimodel_id   = isset( $value['aimodel_id'] ) ? $value['aimodel_id'] : '';
 		$datamodel_id = isset( $value['datamodel_id'] ) ? $value['datamodel_id'] : '';
-		$name         = isset( $value['agent_name'] ) ? $value['agent_name'] : '';
-		$desc         = isset( $value['agent_desc'] ) ? $value['agent_desc'] : '';
-		$pers         = isset( $value['agent_persona'] ) ? $value['agent_persona'] : '';
+		$name         = isset( $value['agent_name'] ) ? trim( $value['agent_name'] ) : '';
+		$desc         = isset( $value['agent_desc'] ) ? trim( $value['agent_desc'] ) : '';
+		$pers         = isset( $value['agent_persona'] ) ? trim( $value['agent_persona'] ) : '';
 
 		// If we have a model, and it's not creating a new one.
 		if ( $aimodel_id && '_create_agent' !== $aimodel_id ) {
+			$code               = null;
 			$old_datamodel_id   = isset( $old_value['datamodel_id'] ) ? $old_value['datamodel_id'] : '';
 			$new_datamodel_id   = isset( $value['datamodel_id'] ) ? $value['datamodel_id'] : '';
 			$old_widget_id      = isset( $old_value['widget_id'] ) ? $old_value['widget_id'] : '';
@@ -915,8 +996,31 @@ class Dappier_Settings {
 			$needs_datamodel_id = ! $new_datamodel_id || $old_datamodel_id !== $new_datamodel_id;
 			$needs_widget_id    = ! $new_widget_id || $old_widget_id !== $new_widget_id;
 
+			// Set new agent array.
+			$agent_new = [
+				'name'    => $name,
+				'desc'    => $desc,
+				'persona' => $pers,
+			];
+
+			// Set old agent array.
+			$agent_old = [
+				'name'    => isset( $old_value['agent_name'] ) ? trim( $old_value['agent_name'] ) : '',
+				'desc'    => isset( $old_value['agent_desc'] ) ? trim( $old_value['agent_desc'] ) : '',
+				'persona' => isset( $old_value['agent_persona'] ) ? trim( $old_value['agent_persona'] ) : '',
+			];
+
+			// Start agent data to merge.
+			$agent_data = [
+				'id'             => $aimodel_id,
+				'datamodel_id'   => $datamodel_id,
+				'name'           => $name,
+				'description'    => $desc,
+				'persona'        => $pers,
+			];
+
 			// If we need a data model or widget id.
-			if ( ! $needs_datamodel_id || ! $needs_widget_id ) {
+			if ( $needs_datamodel_id || $needs_widget_id || $agent_new !== $agent_old ) {
 				// Set up the API url and body.
 				$url = 'https://api.dappier.com/v1/integrations/agent/' . $aimodel_id;
 
@@ -945,15 +1049,48 @@ class Dappier_Settings {
 						if ( $needs_widget_id && isset( $body['widget_id'] ) ) {
 							$value['widget_id'] = $body['widget_id'];
 						}
+
+						// Merge the agent data over default data.
+						$agent_data = array_merge( $body, $agent_data );
 					}
+				}
+			}
+
+			// If the agent has changed.
+			if ( $agent_new !== $agent_old && 200 === $code ) {
+				// Set up the API url.
+				$url  = 'https://api.dappier.com/v1/integrations/agent';
+
+				// Set up the request arguments.
+				$args = [
+					'headers' => [
+						'Content-Type'  => 'application/json',
+						'Authorization' => 'Bearer ' . $api_key,
+					],
+					'body' => wp_json_encode( $agent_data ),
+				];
+
+				// Make the request.
+				$response = wp_remote_post( $url, $args );
+				$code     = wp_remote_retrieve_response_code( $response );
+
+				// Check for errors.
+				if ( 200 !== $code ) {
+					// Get message.
+					$message = isset( $response['response']['message'] ) ? $response['response']['message'] : __( 'An error occurred while processing the request.', 'dappier' );
+
+					// Add a settings error with a unique error code.
+					add_settings_error(
+						'dappier',
+						'update_agent_error_' . $code,
+						sprintf( __( 'Error Updating Agent (%d): %s', 'dappier' ), $code, $message ),
+						'error'
+					);
 				}
 			}
 		}
 
-		// Unset the agent data.
-		unset( $value['agent_name'], $value['agent_desc'], $value['agent_persona'] );
-
-		// Bail if not creating.
+		// If not creating.
 		if ( '_create_agent' !== $aimodel_id ) {
 			return $value;
 		}
