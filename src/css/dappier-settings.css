@@ -11,6 +11,10 @@
 	--border-radius: 12px;
 }
 
+::placeholder {
+	opacity: .6;
+}
+
 #wpcontent {
 	background-color: white;
 }
@@ -54,86 +58,72 @@
 	gap: 2em;
 	align-items: start;
 
-	p {
+	:where(p) {
 		margin: 0 0 1em;
 		padding: 0;
 	}
 
-	a {
+	:where(a) {
 		color: var(--color-link);
 	}
 
-	a:focus {
+	:where(a:focus) {
 		/* match/override WP core button styles */
 		color: currentColor;
 		box-shadow: 0 0 0 2px var(--color-primary);
 		outline: 2px solid transparent;
 	}
 
-	a:hover,
-	a:focus-visible {
+	:where(a:hover),
+	:where(a:focus-visible) {
 		color: var(--color-primary);
 	}
 
-	::placeholder {
-		opacity: .6;
-	}
-
-	input[type="text"]:focus,
-	input[type="password"]:focus,
-	input[type="color"]:focus,
-	input[type="date"]:focus,
-	input[type="datetime"]:focus,
-	input[type="datetime-local"]:focus,
-	input[type="email"]:focus,
-	input[type="month"]:focus,
-	input[type="number"]:focus,
-	input[type="search"]:focus,
-	input[type="tel"]:focus,
-	input[type="time"]:focus,
-	input[type="url"]:focus,
-	input[type="week"]:focus,
-	input[type="checkbox"]:focus,
-	input[type="radio"]:focus,
-	select:focus,
-	textarea:focus {
+	:where(input[type="text"]:focus),
+	:where(input[type="password"]:focus),
+	:where(input[type="color"]:focus),
+	:where(input[type="date"]:focus),
+	:where(input[type="datetime"]:focus),
+	:where(input[type="datetime-local"]:focus),
+	:where(input[type="email"]:focus),
+	:where(input[type="month"]:focus),
+	:where(input[type="number"]:focus),
+	:where(input[type="search"]:focus),
+	:where(input[type="tel"]:focus),
+	:where(input[type="time"]:focus),
+	:where(input[type="url"]:focus),
+	:where(input[type="week"]:focus),
+	:where(input[type="checkbox"]:focus),
+	:where(input[type="radio"]:focus),
+	:where(select:focus),
+	:where(textarea:focus) {
 		border-color: var(--color-body);
 		box-shadow: 0 0 0 1px var(--color-body);
 		outline: 2px solid transparent;
 	}
 
-	input[type="text"]:focus-visible,
-	input[type="password"]:focus-visible,
-	input[type="color"]:focus-visible,
-	input[type="date"]:focus-visible,
-	input[type="datetime"]:focus-visible,
-	input[type="datetime-local"]:focus-visible,
-	input[type="email"]:focus-visible,
-	input[type="month"]:focus-visible,
-	input[type="number"]:focus-visible,
-	input[type="search"]:focus-visible,
-	input[type="tel"]:focus-visible,
-	input[type="time"]:focus-visible,
-	input[type="url"]:focus-visible,
-	input[type="week"]:focus-visible,
-	input[type="checkbox"]:focus-visible,
-	input[type="radio"]:focus-visible,
-	select:focus-visible,
-	textarea:focus-visible {
+	:where(input[type="text"]:focus-visible),
+	:where(input[type="password"]:focus-visible),
+	:where(input[type="color"]:focus-visible),
+	:where(input[type="date"]:focus-visible),
+	:where(input[type="datetime"]:focus-visible),
+	:where(input[type="datetime-local"]:focus-visible),
+	:where(input[type="email"]:focus-visible),
+	:where(input[type="month"]:focus-visible),
+	:where(input[type="number"]:focus-visible),
+	:where(input[type="search"]:focus-visible),
+	:where(input[type="tel"]:focus-visible),
+	:where(input[type="time"]:focus-visible),
+	:where(input[type="url"]:focus-visible),
+	:where(input[type="week"]:focus-visible),
+	:where(input[type="checkbox"]:focus-visible),
+	:where(input[type="radio"]:focus-visible),
+	:where(select:focus-visible),
+	:where(textarea:focus-visible) {
 		border: none;
 		box-shadow: 0 0 0 1px var(--color-primary);
 		outline: 2px solid transparent;
 	}
-
-	/* p:where(:not(:last-child)) {
-		margin: 0 0 1em;
-		padding: 0;
-	} */
-
-	/* p:where(:last-child) {
-		margin: 0;
-		padding: 0;
-	} */
 }
 
 @media only screen and (min-width: 800px) {
@@ -244,7 +234,7 @@
 }
 
 .dappier-step__desc {
-	margin: 0;
+	margin: 0 0 .5em;
 	font-size: 95%;
 	opacity: .8;
 }
@@ -271,7 +261,7 @@
 }
 
 p.submit {
-	margin: 0 0 1em;
+	margin: 0;
 	padding: 0;
 }
 
@@ -300,11 +290,40 @@ p.submit {
 	content: "";
 }
 
-.wp-core-ui {
+.dappier-media__container {
+	display: flex;
+	gap: 16px;
+	align-items: center;
 
-	.button:not([class*="wp-color-"]):not([class*="wp-picker-"]),
-	.button:not([class*="wp-color-"]):not([class*="wp-picker-"]):focus,
-	.button:not([class*="wp-color-"]):not([class*="wp-picker-"]):focus-visible {
+	.dappier-media__upload {
+		max-width: 100px;
+	}
+
+	img {
+		display: block;
+		width: 100%;
+	}
+}
+
+.dappier-media__remove {
+	text-decoration: none;
+}
+
+.dappier-media__remove:hover,
+.dappier-media__remove:focus-visible {
+	text-decoration: underline;
+}
+
+.wp-core-ui {
+	.button,
+	.button-secondary {
+		color: #50575e;
+		border-color: #c3c4c7;
+	}
+
+	.button-primary,
+	.button-primary:focus,
+	.button-primary:focus-visible {
 		margin: 0;
 		padding: 6px 16px;
 		background-color: var(--color-primary);
@@ -314,35 +333,16 @@ p.submit {
 		transition: all .2s ease-in-out;
 	}
 
-	.button:not([class*="wp-color-"]):not([class*="wp-picker-"]):focus,
-	.button:not([class*="wp-color-"]):not([class*="wp-picker-"]):focus-visible {
-		/* match/override WP core button styles */
+	.button-primary:focus,
+	.button-primary:focus-visible {
 		box-shadow: 0 0 0 1px #fff, 0 0 0 3px var(--color-primary);
 		outline: 2px solid transparent;
 	}
 
-	.button:not([class*="wp-color-"]):not([class*="wp-picker-"]):active,
-	.button:not([class*="wp-color-"]):not([class*="wp-picker-"]):hover,
-	.button:not([class*="wp-color-"]):not([class*="wp-picker-"]):focus,
-	.button:not([class*="wp-color-"]):not([class*="wp-picker-"]):focus-visible {
+	.button-primary:active,
+	.button-primary:hover,
+	.button-primary:focus,
+	.button-primary:focus-visible {
 		background-color: var(--color-primary-light);
-	}
-
-	.button[class*="wp-color-"],
-	.button[class*="wp-picker-"] {
-		border-color: rgba(0, 0, 0, 0.2);
-	}
-
-	.button[class*="wp-color-"]:active,
-	.button[class*="wp-color-"]:hover,
-	.button[class*="wp-color-"]:focus,
-	.button[class*="wp-color-"]:focus-visible,
-	.button[class*="wp-picker-"]:active,
-	.button[class*="wp-picker-"]:hover,
-	.button[class*="wp-picker-"]:focus,
-	.button[class*="wp-picker-"]:focus-visible {
-		border: 1px solid var(--color-primary);
-		box-shadow: none;
-		outline: 1px solid var(--color-primary);
 	}
 }
