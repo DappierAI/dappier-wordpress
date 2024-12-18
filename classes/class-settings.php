@@ -822,17 +822,37 @@ class Dappier_Settings {
 			return $details;
 		}
 
+		// Combine agents fields.
+		if ( isset( $details['ai_agents_used'] ) && isset( $details['ai_agents_allowed'] ) && $details['ai_agents_used'] && $details['ai_agents_allowed'] ) {
+			$details['ai_agents'] = sprintf( '%s %s %s', $details['ai_agents_used'], __( 'of', 'dappier' ), $details['ai_agents_allowed'] );
+
+			unset( $details['ai_agents_used'] );
+			unset( $details['ai_agents_allowed'] );
+		}
+
+		// Combine queries fields.
+		if ( isset( $details['queries_used_month'] ) && isset( $details['total_queries_allowed'] ) && $details['queries_used_month'] && $details['total_queries_allowed'] ) {
+			$details['queries'] = sprintf( '%s %s %s', $details['queries_used_month'], __( 'of', 'dappier' ), $details['total_queries_allowed'] );
+
+			unset( $details['queries_used_month'] );
+			unset( $details['total_queries_allowed'] );
+		}
+
 		// Map the details.
 		$map = [
-			'account_id'           => [ 'label' => __( 'Account ID', 'dappier' ), 'sanitize' => 'sanitize_key' ],
-			'widget_id'            => [ 'label' => __( 'AskAI ID', 'dappier' ), 'sanitize' => 'sanitize_key' ],
-			'email'                => [ 'label' => __( 'Email', 'dappier' ), 'sanitize' => 'sanitize_email' ],
-			'name'                 => [ 'label' => __( 'Name', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
-			'subscription_level'   => [ 'label' => __( 'Subscription', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
-			'ai_agents_used'       => [ 'label' => __( 'AI Agents', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
-			'created_at'           => [ 'label' => __( 'Created at', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
-			'queries_used_month'   => [ 'label' => __( 'Queries this Month', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
-			'rev_share_in_percent' => [ 'label' => __( 'Revenue Share', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
+			'account_id'            => [ 'label' => __( 'Account ID', 'dappier' ), 'sanitize' => 'sanitize_key' ],
+			'widget_id'             => [ 'label' => __( 'AskAI ID', 'dappier' ), 'sanitize' => 'sanitize_key' ],
+			'email'                 => [ 'label' => __( 'Email', 'dappier' ), 'sanitize' => 'sanitize_email' ],
+			'name'                  => [ 'label' => __( 'Name', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
+			'subscription_level'    => [ 'label' => __( 'Subscription', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
+			'ai_agents'             => [ 'label' => __( 'AI Agents', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
+			'ai_agents_used'        => [ 'label' => __( 'AI Agents', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
+			'ai_agents_allowed'     => [ 'label' => __( 'AI Agents', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
+			'created_at'            => [ 'label' => __( 'Created at', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
+			'queries'               => [ 'label' => __( 'Queries this Month', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
+			'queries_used_month'    => [ 'label' => __( 'Queries this Month', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
+			'total_queries_allowed' => [ 'label' => __( 'Total Queries Allowed', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
+			'rev_share_in_percent'  => [ 'label' => __( 'Revenue Share', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
 		];
 
 		// Loop and sanitize.
