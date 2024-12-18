@@ -1,13 +1,14 @@
 document.addEventListener( 'DOMContentLoaded', function() {
 	const aiModel           = document.getElementById('aimodel_id');
-	const agentName         = document.querySelector('.agent_name');
-	const agentDesc         = document.querySelector('.agent_desc');
-	const agentPersona      = document.querySelector('.agent_persona');
+	const agentAdvanced     = document.querySelector('.agent-advanced');
+	// const agentName         = document.querySelector('.agent_name');
+	// const agentDesc         = document.querySelector('.agent_desc');
+	// const agentPersona      = document.querySelector('.agent_persona');
 	const agentNameInput    = document.getElementById('agent_name');
 	const agentDescInput    = document.getElementById('agent_desc');
 	const agentPersonaInput = document.getElementById('agent_persona');
 	const colorFields       = document.querySelectorAll('.dappier-color-picker');
-	let   fieldsHidden      = false;
+	let   fieldsHidden      = true;
 
 	// If no agent value, that means some agents exist but none have been chosen. Hide fields.
 	if ( ! aiModel.value ) {
@@ -83,16 +84,12 @@ document.addEventListener( 'DOMContentLoaded', function() {
 
 	// Function to show fields.
 	function showFields() {
-		agentName.style.display    = 'block';
-		agentDesc.style.display    = 'block';
-		agentPersona.style.display = 'block';
+		agentAdvanced.setAttribute( 'open', '' );
 	}
 
 	// Function to hide fields.
 	function hideFields() {
-		agentName.style.display    = 'none';
-		agentDesc.style.display    = 'none';
-		agentPersona.style.display = 'none';
+		agentAdvanced.removeAttribute( 'open' );
 	}
 });
 

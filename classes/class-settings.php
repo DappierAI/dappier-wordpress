@@ -123,7 +123,7 @@ class Dappier_Settings {
 			'', // title
 			[ $this, 'datamodel_id_callback' ], // callback
 			'dappier', // page
-			'dappier_three' // section
+			'dappier_three_advanced' // section
 		);
 
 		// Agent Widget ID.
@@ -132,7 +132,7 @@ class Dappier_Settings {
 			'', // title
 			[ $this, 'widget_id_callback' ], // callback
 			'dappier', // page
-			'dappier_three' // section
+			'dappier_three_advanced' // section
 		);
 
 		// Agent Name.
@@ -141,7 +141,7 @@ class Dappier_Settings {
 			'', // title
 			[ $this, 'agent_name_callback' ], // callback
 			'dappier', // page
-			'dappier_three' // section
+			'dappier_three_advanced' // section
 		);
 
 		// Agent Description.
@@ -150,16 +150,16 @@ class Dappier_Settings {
 			'', // title
 			[ $this, 'agent_desc_callback' ], // callback
 			'dappier', // page
-			'dappier_three' // section
+			'dappier_three_advanced' // section
 		);
 
-		// Agent Description.
+		// Agent Persona.
 		add_settings_field(
 			'agent_persona', // id
 			'', // title
 			[ $this, 'agent_persona_callback' ], // callback
 			'dappier', // page
-			'dappier_three' // section
+			'dappier_three_advanced' // section
 		);
 
 		// AskAI Location.
@@ -650,6 +650,10 @@ class Dappier_Settings {
 								printf( '<p>%s</p>', __( 'Follow the steps below. The setup only takes a few minutes.', 'dappier' ) );
 								printf( '<div class="dappier-callout">%s</div>', __( 'We\'ll securely generate a private AI model, stored in a multi-tenant system. This model will power the Ask AI chatbot and AI-powered recommendations on your site.', 'dappier' ) );
 								do_settings_fields( 'dappier', 'dappier_three');
+								echo '<details class="dappier-step__advanced agent-advanced">';
+									printf( '<summary>%s</summary>', __( 'Edit Agent Details', 'dappier' ) );
+									do_settings_fields( 'dappier', 'dappier_three_advanced' );
+								echo '</details>';
 								$button_text = $aimodel_id ? __( 'Update Agent', 'dappier' ) : __( 'Save Agent', 'dappier' );
 								submit_button( $button_text, 'primary', 'submit_three' );
 							echo '</div>';
