@@ -260,6 +260,16 @@
 	}
 }
 
+.dappier-step__advanced {
+	margin-bottom: 24px;
+	cursor: pointer;
+
+	summary {
+		margin-bottom: 12px;
+		color: var(--color-link);
+	}
+}
+
 p.submit {
 	margin: 0;
 	padding: 0;
