@@ -262,11 +262,11 @@
 
 .dappier-step__advanced {
 	margin-bottom: 24px;
-	cursor: pointer;
 
 	summary {
 		margin-bottom: 12px;
 		color: var(--color-link);
+		cursor: pointer;
 	}
 }
 
