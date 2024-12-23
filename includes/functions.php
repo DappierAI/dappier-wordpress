@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || die;
  *
  * @access private
  *
- * @since TBD
+ * @since 0.7.0
  *
  * @return array
  */
@@ -23,7 +23,7 @@ function dappier_get_allowed_post_types() {
 /**
  * Check if the plugin is configured and has required settings.
  *
- * @since TBD
+ * @since 0.7.0
  *
  * @return bool
  */
@@ -46,7 +46,7 @@ function dappier_is_configured() {
 /**
  * Enqueue the askai script.
  *
- * @since TBD
+ * @since 0.7.0
  *
  * @return void
  */

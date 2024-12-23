@@ -7,7 +7,7 @@ add_action( 'wp_ajax_dappier_get_agent_data', 'dappier_get_agent_data' );
 /**
  * Get the agent data via ajax.
  *
- * @since TBD
+ * @since 0.7.0
  *
  * @return void
  */

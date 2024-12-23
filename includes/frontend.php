@@ -7,7 +7,7 @@ add_action( 'init', 'dappier_register_scripts' );
 /**
  * Register scripts.
  *
- * @since TBD
+ * @since 0.7.0
  *
  * @return void
  */

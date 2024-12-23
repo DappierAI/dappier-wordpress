@@ -526,7 +526,7 @@ class Dappier_Settings {
 	/**
 	 * Setting callback.
 	 *
-	 * @since TBD
+	 * @since 0.7.0
 	 *
 	 * @return void
 	 */
@@ -554,7 +554,7 @@ class Dappier_Settings {
 	/**
 	 * Setting callback.
 	 *
-	 * @since TBD
+	 * @since 0.7.0
 	 *
 	 * @return void
 	 */
@@ -565,7 +565,7 @@ class Dappier_Settings {
 	/**
 	 * Setting callback.
 	 *
-	 * @since TBD
+	 * @since 0.7.0
 	 *
 	 * @return void
 	 */
@@ -585,7 +585,7 @@ class Dappier_Settings {
 	/**
 	 * Setting callback.
 	 *
-	 * @since TBD
+	 * @since 0.7.0
 	 *
 	 * @return void
 	 */
@@ -602,7 +602,7 @@ class Dappier_Settings {
 	/**
 	 * Setting callback.
 	 *
-	 * @since TBD
+	 * @since 0.7.0
 	 *
 	 * @return void
 	 */
@@ -613,7 +613,7 @@ class Dappier_Settings {
 	/**
 	 * Setting callback.
 	 *
-	 * @since TBD
+	 * @since 0.7.0
 	 *
 	 * @return void
 	 */
@@ -920,7 +920,7 @@ class Dappier_Settings {
 	/**
 	 * Get the agent details.
 	 *
-	 * @since TBD
+	 * @since 0.7.0
 	 *
 	 * @return array
 	 */
@@ -1375,7 +1375,7 @@ class Dappier_Settings {
 	/**
 	 * Get the agent.
 	 *
-	 * @since TBD
+	 * @since 0.7.0
 	 *
 	 * @param string $aimodel_id The agent ID.
 	 * @param string $api_key    The API key.

@@ -19,7 +19,7 @@ class Dappier_AskAi {
 	/**
 	 * Get an AskAI instance.
 	 *
-	 * @since TBD
+	 * @since 0.7.0
 	 *
 	 * @return void
 	 */
@@ -66,7 +66,7 @@ class Dappier_AskAi {
 	/**
 	 * Get default attributes.
 	 *
-	 * @since TBD
+	 * @since 0.7.0
 	 *
 	 * @return array
 	 */
