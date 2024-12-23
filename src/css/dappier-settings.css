@@ -178,12 +178,6 @@
 	background-color: var(--color-neutral);
 }
 
-.dappier-step__aimodel {
-	display: flex;
-	gap: 16px;
-	align-items: center;
-}
-
 .dappier-status {
 	padding: 2px 8px;
 	font-size: .75em;
