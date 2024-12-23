@@ -31,6 +31,7 @@
 	gap: 32px 16px;
 	justify-content: space-between;
 	align-items: center;
+	width: 100%;
 	margin-bottom: 24px;
 	padding-block: 24px 34px; /* bottom margin is 24px + 10px from `.wrap` top margin from WP */
 	border-bottom: 2px solid var(--color-neutral);
@@ -44,13 +45,6 @@
 .dappier-logo__img {
 	display: block;
 	width: 100%;
-}
-
-.dappier-header__content {
-
-	h2 {
-		margin: 0 0 8px;
-	}
 }
 
 .dappier-inner {
@@ -184,7 +178,11 @@
 }
 
 .dappier-step__content {
-	padding: 16px;
+	padding: 24px 16px;
+
+	> p:last-child {
+		margin: 0;
+	}
 
 	.form-table,
 	.form-table :where(tbody, thead, tfoot, tr, th, td) {
@@ -216,12 +214,18 @@
 }
 
 .dappier-step__field {
-	display: grid;
-	gap: .2em;
-	max-width: 30em;
-	margin-block: 4px 16px;
+	padding: 24px 16px;
 
-	input:not(.button),
+	select {
+		max-width: max(50%, 15rem);
+	}
+
+	input[type="number"] {
+		max-width: 8ch;
+	}
+
+	input:not([type="number"]):not([type="submit"]):not(.button),
+	select,
 	textarea {
 		display: block;
 		width: 100%;
@@ -229,12 +233,18 @@
 	}
 }
 
+.dappier-step__content:not(:last-of-type),
+.dappier-step__field:not(:last-of-type) {
+	border-bottom: 1px solid var(--color-neutral);
+}
+
 .dappier-step__label {
 	display: block;
+	margin-bottom: .25em;
 }
 
 .dappier-step__desc {
-	margin: 0 0 .5em;
+	margin: 0 0 .75em;
 	font-size: 95%;
 	opacity: .8;
 }
@@ -260,13 +270,29 @@
 	}
 }
 
+.dappier-step__agent {
+
+	.dappier-step__inside:first-child {
+		margin-bottom: 16px;
+	}
+
+	.dappier-step__inside:not(:first-child):not(:last-child) {
+		margin-bottom: 24px;
+	}
+}
+
 .dappier-step__advanced {
-	margin-bottom: 24px;
+
+	summary {
+		color: var(--color-link);
+		cursor: pointer;
+	}
+}
+
+.dappier-step__advanced[open] {
 
 	summary {
 		margin-bottom: 12px;
-		color: var(--color-link);
-		cursor: pointer;
 	}
 }
 
@@ -277,10 +303,13 @@ p.submit {
 
 .dappier-callout {
 	position: relative;
-	margin-bottom: 16px;
 	padding: 24px 24px 24px 48px;
 	background-color: var(--color-primary-neutral);
 	border-radius: 12px;
+}
+
+.dapper-callout:not(:last-child) {
+	margin-bottom: 16px;
 }
 
 .dappier-callout::before {
@@ -305,13 +334,34 @@ p.submit {
 	gap: 16px;
 	align-items: center;
 
-	.dappier-media__upload {
-		max-width: 100px;
-	}
-
 	img {
 		display: block;
 		width: 100%;
+	}
+}
+
+.dappier-step__field.askai_logo,
+.dappier-step__field.askai_icon {
+	padding-bottom: 0;
+	border-width: 0;
+}
+
+.dappier-step__field.askai_logo {
+
+	.dappier-media__upload {
+
+		img {
+			max-width: 90px;
+		}
+	}
+}
+.dappier-step__field.askai_icon {
+
+	.dappier-media__upload {
+
+		img {
+			max-width: 24px;
+		}
 	}
 }
 
@@ -322,6 +372,12 @@ p.submit {
 .dappier-media__remove:hover,
 .dappier-media__remove:focus-visible {
 	text-decoration: underline;
+}
+
+.dappier-step__number {
+	display: flex;
+	gap: 4px;
+	align-items: center;
 }
 
 .wp-core-ui {

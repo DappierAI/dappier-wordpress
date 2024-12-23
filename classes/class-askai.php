@@ -74,35 +74,43 @@ class Dappier_AskAi {
 		$api_key     = dappier_get_option( 'api_key' );
 		$aimodel_id  = dappier_get_option( 'aimodel_id' );
 		$widget_id   = dappier_get_option( 'widget_id' );
-		$title       = __( 'Ask AI', 'dappier' );
 		$widget_id   = $widget_id;
 		$bg_color    = dappier_get_option( 'askai_bg_color' );
-		// $bg_color    = is_null( $bg_color ) ? '#f8f9fa' : $bg_color;
 		$bg_color    = $bg_color ?: 'inherit';
 		$fg_color    = dappier_get_option( 'askai_fg_color' );
 		$fg_color    = $fg_color ?: 'inherit';
 		$theme_color = dappier_get_option( 'askai_theme_color' );
-		// $theme_color = is_null( $theme_color ) ? '#674ad9' : $theme_color;
-		// $theme_color = $theme_color ?: '#674ad9';
 		$theme_color = $theme_color ?: 'inherit';
+		$branding    = dappier_get_option( 'askai_branding' );
+		$branding    = is_null( $branding ) ? 'logo' : $branding;
+		$logo_id     = dappier_get_option( 'askai_logo' );
+		$logo_url    = $logo_id ? wp_get_attachment_url( $logo_id ) : 'https://assets.dappier.com/dappier_logo.png';
+		$logo_url    = 'logo' === $branding ? $logo_url : '';
+		$logo_width  = dappier_get_option( 'askai_logo_width' );
+		$logo_width  = $logo_width ?: '90';
+		$title_text  = dappier_get_option( 'askai_title' );
+		$icon_id     = dappier_get_option( 'askai_icon' );
+		$icon_url    = $icon_id ? wp_get_attachment_url( $icon_id ) : 'https://assets.dappier.com/dappier_logo_small.png';
+		$icon_width  = dappier_get_option( 'askai_icon_width' );
+		$icon_width  = $icon_width ?: '24';
 
 		// Set attributes.
 		$attributes = [
 			'widgetId'                     => $widget_id,
-			'title'                        => $title,
+			'title'                        => $title_text,
 			'mainBackgroundColor'          => $bg_color,
 			'mainTextColor'                => $fg_color,
 			'themeColor'                   => $theme_color,
-			'mainLogoUrl'                  => 'https://assets.dappier.com/dappier_logo.png',
-			'mainLogoWidth'                => '90',
-			'chatIconUrl'                  => 'https://assets.dappier.com/dappier_logo_small.png',
-			'chatIconWidth'                => '24',
+			'mainLogoUrl'                  => $logo_url,
+			'mainLogoWidth'                => $logo_width,
+			'chatIconUrl'                  => $chat_url,
+			'chatIconWidth'                => $icon_width,
 			'enablePromptSuggestions'      => 'true',
 			'enableContentRecommendations' => 'true',
 			'showAttributionLinks'         => 'true',
-			'enableSiteName'               => 'false',
-			'enableTitle'                  => 'false',
-			'initialSearchQuery'           => '',
+			'enableSiteName'               => 'true',
+			'enableTitle'                  => 'title' === $branding ? 'true' : 'false',
+			'initialSearchQuery'           => is_search() ? get_search_query() : '',
 		];
 
 		// Filter default attributes.
