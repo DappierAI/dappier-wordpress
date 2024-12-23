@@ -848,9 +848,63 @@ class Dappier_Settings {
 
 						// If active.
 						if ( $active ) {
+							// If we have an agent and API key.
+							if ( $aimodel_id && $api_key ) {
+								$agent = $this->get_agent( $aimodel_id, $api_key );
+								$code  = wp_remote_retrieve_response_code( $agent );
+
+								/**
+								 * Get status.
+								 * Possible statuses: 'not_started', 'running', 'failed', 'success', 'inactive', 'no_agent'.
+								 */
+								if ( 200 === $code ) {
+									$body  = wp_remote_retrieve_body( $agent );
+									$body  = json_decode( $body, true );
+
+									if ( $body && isset( $body['ingestion_status'] ) ) {
+										$ingestion_status = sanitize_html_class( $body['ingestion_status'] );
+									}
+								} else {
+									$ingestion_status = 'failed';
+								}
+							}
+							// No agent.
+							else {
+								// If no agent.
+								if ( ! $aimodel_id ) {
+									$ingestion_status = 'no_agent';
+								} else {
+									$ingestion_status = 'inactive';
+								}
+							}
+
+							// Set ingestion text.
+							switch ( $ingestion_status ) {
+								case 'not_started':
+									$ingestion_text = __( 'Not Started', 'dappier' );
+									break;
+								case 'running':
+									$ingestion_text = __( 'Running', 'dappier' );
+									break;
+								case 'failed':
+									$ingestion_text = __( 'Failed', 'dappier' );
+									break;
+								case 'success':
+									$ingestion_text = __( 'Success', 'dappier' );
+									break;
+								case 'inactive':
+									$ingestion_text = __( 'Inactive', 'dappier' );
+									break;
+								case 'no_agent':
+									$ingestion_text = __( 'No Agent', 'dappier' );
+									break;
+								default:
+									$ingestion_text = __( 'Inactive', 'dappier' );
+							}
+
 							// My Account.
 							echo '<div class="dappier-step__inner">';
-								printf( '<h3 class="dappier-heading">%s</h3>', __( 'My Account', 'dappier' ) );
+								printf( '<h3 class="dappier-heading">%s <span class="dappier-status dappier-status__%s">%s</span></h3>', __( 'My Account', 'dappier' ), $ingestion_status, $ingestion_text );
 								echo '<div class="dappier-step__content">';
 									// If agent is selected.
 									if ( $aimodel_id ) {
@@ -1193,19 +1247,8 @@ class Dappier_Settings {
 
 			// If we need a data model or widget id.
 			if ( $needs_datamodel_id || $needs_widget_id || $agent_new !== $agent_old ) {
-				// Set up the API url and body.
-				$url = 'https://api.dappier.com/v1/integrations/agent/' . $aimodel_id;
-
-				// Set up the request arguments.
-				$args = [
-					'headers' => [
-						'Content-Type'  => 'application/json',
-						'Authorization' => 'Bearer ' . $api_key,
-					],
-				];
-
-				// Make the request.
-				$response = wp_remote_get( $url, $args );
+				// Get agent details.
+				$response = $this->get_agent( $aimodel_id, $api_key );
 				$code     = wp_remote_retrieve_response_code( $response );
 
 				// Check for errors.
@@ -1309,6 +1352,58 @@ class Dappier_Settings {
 		}
 
 		return $value;
+	}
+
+	/**
+	 * Get the agent.
+	 *
+	 * @since TBD
+	 *
+	 * @param string $aimodel_id The agent ID.
+	 * @param string $api_key    The API key.
+	 *
+	 * @return array
+	 */
+	function get_agent( $aimodel_id, $api_key ) {
+		static $cache = [];
+
+		// Check for cache.
+		if ( isset( $cache[ $aimodel_id ] ) ) {
+			return $cache[ $aimodel_id ];
+		}
+
+		// Set up the API url and body.
+		$url = 'https://api.dappier.com/v1/integrations/agent/' . $aimodel_id;
+
+		// Set up the request arguments.
+		$args = [
+			'headers' => [
+				'Content-Type'  => 'application/json',
+				'Authorization' => 'Bearer ' . $api_key,
+			],
+		];
+
+		// Make the request.
+		$response = wp_remote_get( $url, $args );
+		$code     = wp_remote_retrieve_response_code( $response );
+
+		// Check for errors.
+		if ( 200 !== $code ) {
+			// Get message.
+			$message = isset( $response['response']['message'] ) ? $response['response']['message'] : __( 'An error occurred while processing the request.', 'dappier' );
+
+			// Add a settings error with a unique error code.
+			add_settings_error(
+				'dappier',
+				'create_agent_error_' . $code,
+				sprintf( __( 'Error Creating Agent (%d): %s', 'dappier' ), $code, wp_kses_post( $message ) ),
+				'error'
+			);
+		}
+
+		$cache[ $aimodel_id ] = $response;
+
+		return $cache[ $aimodel_id ];
 	}
 
 	/**

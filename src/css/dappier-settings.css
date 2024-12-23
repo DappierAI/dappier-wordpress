@@ -7,6 +7,7 @@
 	--color-link: #678af9;
 	--color-notice: rgba(0, 0, 0, 0.87);
 	--color-success: rgba(167, 250, 172, 1);
+	--color-warning: rgba(255, 215, 0, 1);
 	--color-error: rgba(255, 0, 0, 1);
 	--border-radius: 12px;
 }
@@ -172,9 +173,37 @@
 	display: flex;
 	gap: 16px;
 	margin: 0;
-	padding: 8px 12px;
+	padding: 10px 12px;
 	font-size: 1.2em;
 	background-color: var(--color-neutral);
+}
+
+.dappier-status {
+	display: flex;
+	align-items: center;
+	margin: -6px -8px -4px auto;
+	padding: 4px 8px;
+	font-size: .75em;
+	text-transform: uppercase;
+	border-radius: calc(var(--border-radius) / 2);
+}
+
+.dappier-status__success {
+	background-color: var(--color-success);
+	color: rgba(0, 0, 0, 0.6);
+}
+
+.dappier-status__no_agent,
+.dappier-status__not_started,
+.dappier-status__running {
+	background-color: var(--color-warning);
+	color: rgba(0, 0, 0, 0.6);
+}
+
+.dappier-status__failed,
+.dappier-status__inactive {
+	background-color: var(--color-error);
+	color: white;
 }
 
 .dappier-step__content {
