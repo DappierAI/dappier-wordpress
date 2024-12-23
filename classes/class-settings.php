@@ -670,7 +670,7 @@ class Dappier_Settings {
 		$status     = isset( $_GET['status'] ) && $_GET['status'] ? sanitize_text_field( $_GET['status'] ) : '';
 		$api_key    = dappier_get_option( 'api_key' );
 		$aimodel_id = dappier_get_option( 'aimodel_id' );
-		$details    = $this->get_details();
+		$details    = $this->get_account_details();
 		$active     = null;
 
 		// Check status and set active.
@@ -848,63 +848,12 @@ class Dappier_Settings {
 
 						// If active.
 						if ( $active ) {
-							// If we have an agent and API key.
-							if ( $aimodel_id && $api_key ) {
-								$agent = $this->get_agent( $aimodel_id, $api_key );
-								$code  = wp_remote_retrieve_response_code( $agent );
-
-								/**
-								 * Get status.
-								 * Possible statuses: 'not_started', 'running', 'failed', 'success', 'inactive', 'no_agent'.
-								 */
-								if ( 200 === $code ) {
-									$body  = wp_remote_retrieve_body( $agent );
-									$body  = json_decode( $body, true );
-
-									if ( $body && isset( $body['ingestion_status'] ) ) {
-										$ingestion_status = sanitize_html_class( $body['ingestion_status'] );
-									}
-								} else {
-									$ingestion_status = 'failed';
-								}
-							}
-							// No agent.
-							else {
-								// If no agent.
-								if ( ! $aimodel_id ) {
-									$ingestion_status = 'no_agent';
-								} else {
-									$ingestion_status = 'inactive';
-								}
-							}
-
-							// Set ingestion text.
-							switch ( $ingestion_status ) {
-								case 'not_started':
-									$ingestion_text = __( 'Not Started', 'dappier' );
-									break;
-								case 'running':
-									$ingestion_text = __( 'Running', 'dappier' );
-									break;
-								case 'failed':
-									$ingestion_text = __( 'Failed', 'dappier' );
-									break;
-								case 'success':
-									$ingestion_text = __( 'Success', 'dappier' );
-									break;
-								case 'inactive':
-									$ingestion_text = __( 'Inactive', 'dappier' );
-									break;
-								case 'no_agent':
-									$ingestion_text = __( 'No Agent', 'dappier' );
-									break;
-								default:
-									$ingestion_text = __( 'Inactive', 'dappier' );
-							}
+							// Get agent details.
+							$agent_details = $this->get_agent_details();
 
 							// My Account.
 							echo '<div class="dappier-step__inner">';
-								printf( '<h3 class="dappier-heading">%s <span class="dappier-status dappier-status__%s">%s</span></h3>', __( 'My Account', 'dappier' ), $ingestion_status, $ingestion_text );
+								printf( '<h3 class="dappier-heading">%s <span class="dappier-status dappier-status__%s">%s</span></h3>', __( 'My Account', 'dappier' ), $agent_details['status'], $agent_details['text'] );
 								echo '<div class="dappier-step__content">';
 									// If agent is selected.
 									if ( $aimodel_id ) {
@@ -969,13 +918,82 @@ class Dappier_Settings {
 	}
 
 	/**
+	 * Get the agent details.
+	 *
+	 * @since TBD
+	 *
+	 * @return array
+	 */
+	function get_agent_details() {
+		$details    = [ 'status' => '', 'text' => '' ];
+		$api_key    = dappier_get_option( 'api_key' );
+		$aimodel_id = dappier_get_option( 'aimodel_id' );
+
+		// If we have an agent and API key.
+		if ( $aimodel_id && $api_key ) {
+			$agent = $this->get_agent( $aimodel_id, $api_key );
+			$code  = wp_remote_retrieve_response_code( $agent );
+
+			/**
+			 * Get status.
+			 * Possible statuses: 'not_started', 'running', 'failed', 'success', 'inactive', 'no_agent'.
+			 */
+			if ( 200 === $code ) {
+				$body  = wp_remote_retrieve_body( $agent );
+				$body  = json_decode( $body, true );
+
+				if ( $body && isset( $body['ingestion_status'] ) ) {
+					$details['status'] = sanitize_html_class( $body['ingestion_status'] );
+				}
+			} else {
+				$details['status'] = 'failed';
+			}
+		}
+		// No agent.
+		else {
+			// If no agent.
+			if ( ! $aimodel_id ) {
+				$details['status'] = 'no_agent';
+			} else {
+				$details['status'] = 'inactive';
+			}
+		}
+
+		// Set ingestion text.
+		switch ( $details['status'] ) {
+			case 'not_started':
+				$details['text'] = __( 'Not Started', 'dappier' );
+				break;
+			case 'running':
+				$details['text'] = __( 'Running', 'dappier' );
+				break;
+			case 'failed':
+				$details['text'] = __( 'Failed', 'dappier' );
+				break;
+			case 'success':
+				$details['text'] = __( 'Success', 'dappier' );
+				break;
+			case 'inactive':
+				$details['text'] = __( 'Inactive', 'dappier' );
+				break;
+			case 'no_agent':
+				$details['text'] = __( 'No Agent', 'dappier' );
+				break;
+			default:
+				$details['text'] = __( 'Inactive', 'dappier' );
+		}
+
+		return $details;
+	}
+
+	/**
 	 * Get the account details.
 	 *
 	 * @since 0.1.0
 	 *
 	 * @return array
 	 */
-	function get_details() {
+	function get_account_details() {
 		// Get required data.
 		$details    = [];
 		$api_key    = dappier_get_option( 'api_key' );
