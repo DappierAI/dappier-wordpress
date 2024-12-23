@@ -324,34 +324,38 @@ class Dappier_Settings {
 	 * @return void
 	 */
 	function aimodel_id_callback() {
-		$aimodel_id = dappier_get_option( 'aimodel_id' );
-		$agents     = $this->get_agents();
+		$aimodel_id    = dappier_get_option( 'aimodel_id' );
+		$agents        = $this->get_agents();
+		$agent_details = $this->get_agent_details();
+		$agent_status  = sprintf( '<span class="dappier-status dappier-status__%s">%s</span>', $agent_details['status'], $agent_details['text'] );
 
 		echo '<div class="dappier-step__inside">';
-			printf( '<label class="dappier-step__label" for="dappier[aimodel_id]">%s</label>', __( 'Agent', 'dappier' ) );
+			printf( '<label class="dappier-step__label" for="dappier[aimodel_id]">%s %s</label>', __( 'Agent', 'dappier' ), $agent_status );
 			printf( '<p class="dappier-step__desc">%s</p>', __( 'Select an existing agent or create a new one.', 'dappier' ) );
+			echo '<div class="dappier-step__aimodel">';
+				echo '<select class="dappier-step__input" name="dappier[aimodel_id]" id="aimodel_id">';
+					// If agents.
+					if ( $agents ) {
+						// Add default option.
+						echo '<option value="">Select an Agent</option>';
 
-			echo '<select class="dappier-step__input" name="dappier[aimodel_id]" id="aimodel_id">';
-				// If agents.
-				if ( $agents ) {
-					// Add default option.
-					echo '<option value="">Select an Agent</option>';
+						// Add existing agents.
+						foreach ( $agents as $agent ) {
+							// SKip if id and name are not set.
+							if ( ! isset( $agent['id'], $agent['name'] ) ) {
+								continue;
+							}
 
-					// Add existing agents.
-					foreach ( $agents as $agent ) {
-						// SKip if id and name are not set.
-						if ( ! isset( $agent['id'], $agent['name'] ) ) {
-							continue;
+							$selected = $aimodel_id === $agent['id'] ? ' selected' : '';
+							printf( '<option value="%s"%s>%s</option>', $agent['id'], $selected, $agent['name'] );
 						}
-
-						$selected = $aimodel_id === $agent['id'] ? ' selected' : '';
-						printf( '<option value="%s"%s>%s</option>', $agent['id'], $selected, $agent['name'] );
 					}
-				}
 
-				// Add option to create a new agent.
-				echo '<option value="_create_agent">Create a new Agent</option>';
-			echo '</select>';
+					// Add option to create a new agent.
+					echo '<option value="_create_agent">Create a new Agent</option>';
+				echo '</select>';
+
+			echo '</div>';
 		echo '</div>';
 	}
 
@@ -848,12 +852,9 @@ class Dappier_Settings {
 
 						// If active.
 						if ( $active ) {
-							// Get agent details.
-							$agent_details = $this->get_agent_details();
-
 							// My Account.
 							echo '<div class="dappier-step__inner">';
-								printf( '<h3 class="dappier-heading">%s <span class="dappier-status dappier-status__%s">%s</span></h3>', __( 'My Account', 'dappier' ), $agent_details['status'], $agent_details['text'] );
+								printf( '<h3 class="dappier-heading">%s</h3>', __( 'My Account', 'dappier' ) );
 								echo '<div class="dappier-step__content">';
 									// If agent is selected.
 									if ( $aimodel_id ) {
