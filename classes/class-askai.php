@@ -13,7 +13,7 @@ class Dappier_AskAi {
 	 * Construct the class.
 	 */
 	function __construct( $args = [] ) {
-		$this->args = shortcode_atts( $args, $this->get_default_attributes() );
+		$this->args = shortcode_atts( $this->get_default_attributes(), $args, 'dappier_askai' );
 	}
 
 	/**
