@@ -6,24 +6,12 @@ defined( 'ABSPATH' ) || die;
 /**
  * Register a shortcode.
  *
- * @since 0.7.0
+ * @since TBD
  *
  * @return string
  */
 add_shortcode( 'dappier_askai', function( $atts ) {
-	// Atts.
-	$atts = shortcode_atts(
-		[
-			'param' => '',
-		],
-		$atts,
-		'shortcode_name'
-	);
+	$askai = new Dappier_AskAi( $atts );
 
-	// Sanitize.
-	$atts = [
-		'param' => esc_html( $atts['param'] ),
-	];
-
-
+	return $askai->get();
 });

@@ -13,7 +13,7 @@ class Dappier_AskAi {
 	 * Construct the class.
 	 */
 	function __construct( $args = [] ) {
-		$this->args = wp_parse_args( $args, $this->get_default_attributes() );
+		$this->args = shortcode_atts( $args, $this->get_default_attributes() );
 	}
 
 	/**
