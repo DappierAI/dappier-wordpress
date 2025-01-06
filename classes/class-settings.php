@@ -644,7 +644,20 @@ class Dappier_Settings {
 		$key       = esc_attr( $key );
 		$label     = esc_html( $label );
 		$image_id  = dappier_get_option( $key );
-		$image_url = $image_id ? wp_get_attachment_image_url( $image_id, 'medium' ) : '';
+
+		// If field is not yet set image ID, try to get it from theme mod or option.
+		if ( is_null( $image_id ) ) {
+			switch ( $key ) {
+				case 'askai_logo':
+					$image_id = (int) get_theme_mod( 'custom_logo' );
+				break;
+				case 'askai_icon':
+					$image_id = (int) get_option( 'site_icon' );
+				break;
+			}
+		}
+
+		$image_url = $image_id ? wp_get_attachment_image_url( $image_id, has_image_size( 'medium' ) ? 'medium' : 'full' ) : '';
 
 		printf( '<div class="dappier-step__field %s">', $key );
 			printf( '<label class="dappier-step__label" for="dappier[%s]">%s</label>', $key, $label );
