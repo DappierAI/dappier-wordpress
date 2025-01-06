@@ -98,7 +98,7 @@ class Dappier_AskAi {
 			'themeColor'                   => $theme_color,
 			'mainLogoUrl'                  => $logo_url,
 			'mainLogoWidth'                => $logo_width,
-			'chatIconUrl'                  => $chat_url,
+			'chatIconUrl'                  => $icon_url,
 			'chatIconWidth'                => $icon_width,
 			'enablePromptSuggestions'      => 'true',
 			'enableContentRecommendations' => 'true',
