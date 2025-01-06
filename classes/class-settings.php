@@ -327,7 +327,8 @@ class Dappier_Settings {
 		$aimodel_id    = dappier_get_option( 'aimodel_id' );
 		$agents        = $this->get_agents();
 		$agent_details = $this->get_agent_details();
-		$agent_status  = sprintf( '<span class="dappier-status dappier-status__%s">%s</span>', $agent_details['status'], $agent_details['text'] );
+		$last_updated  = isset( $agent_details['last_updated'] ) ? sprintf( '(%s: %s)', __( 'last updated', 'dappier' ), $agent_details['last_updated'] ) : '';
+		$agent_status  = sprintf( '<span class="dappier-status dappier-status__%s">%s</span> %s', $agent_details['status'], $agent_details['text'], $last_updated );
 
 		echo '<div class="dappier-step__inside">';
 			printf( '<label class="dappier-step__label" for="dappier[aimodel_id]">%s %s</label>', __( 'Agent', 'dappier' ), $agent_status );
@@ -956,8 +957,14 @@ class Dappier_Settings {
 				$body  = wp_remote_retrieve_body( $agent );
 				$body  = json_decode( $body, true );
 
-				if ( $body && isset( $body['ingestion_status'] ) ) {
-					$details['status'] = sanitize_html_class( $body['ingestion_status'] );
+				if ( $body ) {
+					if ( isset( $body['ingestion_status'] ) ) {
+						$details['status'] = sanitize_html_class( $body['ingestion_status'] );
+					}
+
+					if ( isset( $body['last_ingestion_time'] ) ) {
+						$details['last_updated'] = wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( $body['last_ingestion_time'] ) );
+					}
 				}
 			} else {
 				$details['status'] = 'failed';
