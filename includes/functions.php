@@ -34,11 +34,12 @@ function dappier_is_configured() {
 		return $cache;
 	}
 
-	$api_key      = dappier_get_option( 'api_key' );
-	$aimodel_id   = dappier_get_option( 'aimodel_id' );
-	$datamodel_id = dappier_get_option( 'datamodel_id' );
-	$widget_id    = dappier_get_option( 'widget_id' );
-	$cache        = $api_key && $aimodel_id && $datamodel_id && $widget_id;
+	$api_key        = dappier_get_option( 'api_key' );
+	$aimodel_id     = dappier_get_option( 'aimodel_id' );
+	$datamodel_id   = dappier_get_option( 'datamodel_id' );
+	$external_dm_id = dappier_get_option( 'external_dm_id' );
+	$widget_id      = dappier_get_option( 'widget_id' );
+	$cache          = $api_key && $aimodel_id && $datamodel_id && $external_dm_id && $widget_id;
 
 	return $cache;
 }

@@ -126,6 +126,15 @@ class Dappier_Settings {
 			'dappier_three_advanced' // section
 		);
 
+		// Agent ExternalData Model ID.
+		add_settings_field(
+			'external_dm_id', // id
+			'', // title
+			[ $this, 'external_dm_id_callback' ], // callback
+			'dappier', // page
+			'dappier_three_advanced' // section
+		);
+
 		// Agent Widget ID.
 		add_settings_field(
 			'widget_id', // id
@@ -265,6 +274,7 @@ class Dappier_Settings {
 			'api_key'            => 'sanitize_text_field',
 			'aimodel_id'         => 'sanitize_text_field',
 			'datamodel_id'       => 'sanitize_text_field',
+			'external_dm_id'     => 'sanitize_text_field',
 			'widget_id'          => 'sanitize_text_field',
 			'agent_name'         => 'sanitize_text_field',
 			'agent_desc'         => 'sanitize_textarea_field',
@@ -371,6 +381,19 @@ class Dappier_Settings {
 		$datamodel_id = dappier_get_option( 'datamodel_id' );
 
 		printf( '<input type="hidden" name="dappier[datamodel_id]" id="datamodel_id" value="%s">', esc_attr( $datamodel_id ) );
+	}
+
+	/**
+	 * Setting callback.
+	 *
+	 * @since 0.5.2
+	 *
+	 * @return void
+	 */
+	function external_dm_id_callback() {
+		$external_dm_id = dappier_get_option( 'external_dm_id' );
+
+		printf( '<input type="hidden" name="dappier[external_dm_id]" id="external_dm_id" value="%s">', esc_attr( $external_dm_id ) );
 	}
 
 	/**
@@ -1256,11 +1279,13 @@ class Dappier_Settings {
 			$code               = null;
 			$old_datamodel_id   = isset( $old_value['datamodel_id'] ) ? $old_value['datamodel_id'] : '';
 			$new_datamodel_id   = isset( $value['datamodel_id'] ) ? $value['datamodel_id'] : '';
+			$old_external_dm_id = isset( $old_value['external_dm_id'] ) ? $old_value['external_dm_id'] : '';
+			$new_external_dm_id = isset( $value['external_dm_id'] ) ? $value['external_dm_id'] : '';
 			$old_widget_id      = isset( $old_value['widget_id'] ) ? $old_value['widget_id'] : '';
 			$new_widget_id      = isset( $value['widget_id'] ) ? $value['widget_id'] : '';
 			$needs_datamodel_id = ! $new_datamodel_id || $old_datamodel_id !== $new_datamodel_id;
 			$needs_widget_id    = ! $new_widget_id || $old_widget_id !== $new_widget_id;
-
+			$needs_external_dm_id = ! $new_external_dm_id || $old_external_dm_id !== $new_external_dm_id;
 			// Set new agent array.
 			$agent_new = [
 				'name'    => $name,
@@ -1279,13 +1304,14 @@ class Dappier_Settings {
 			$agent_data = [
 				'id'             => $aimodel_id,
 				'datamodel_id'   => $datamodel_id,
+				'external_dm_id' => $external_dm_id,
 				'name'           => $name,
 				'description'    => $desc,
 				'persona'        => $pers,
 			];
 
 			// If we need a data model or widget id.
-			if ( $needs_datamodel_id || $needs_widget_id || $agent_new !== $agent_old ) {
+			if ( $needs_datamodel_id || $needs_external_dm_id ||$needs_widget_id || $agent_new !== $agent_old ) {
 				// Get agent details.
 				$response = $this->get_agent( $aimodel_id, $api_key );
 				$code     = wp_remote_retrieve_response_code( $response );
@@ -1298,6 +1324,10 @@ class Dappier_Settings {
 					if ( $body ) {
 						if ( $needs_datamodel_id && isset( $body['datamodel_id'] ) ) {
 							$value['datamodel_id'] = $body['datamodel_id'];
+						}
+
+						if ( $needs_external_dm_id && isset( $body['external_dm_id'] ) ) {
+							$value['external_dm_id'] = $body['external_dm_id'];
 						}
 
 						if ( $needs_widget_id && isset( $body['widget_id'] ) ) {
@@ -1383,6 +1413,10 @@ class Dappier_Settings {
 
 			if ( isset( $agent['datamodel_id'] ) ) {
 				$value['datamodel_id'] = $agent['datamodel_id'];
+			}
+
+			if ( isset( $agent['external_dm_id'] ) ) {
+				$value['external_dm_id'] = $agent['external_dm_id'];
 			}
 
 			if ( isset( $agent['widget_id'] ) ) {
