@@ -507,7 +507,6 @@ class Dappier_Settings {
 	 */
 	function askai_bg_color_callback() {
 		$value = dappier_get_option( 'askai_bg_color' );
-		$value = ! is_null( $value ) ? $value : '#f8f9fa';
 
 		echo '<div class="dappier-step__field">';
 			printf( '<label class="dappier-step__label" for="dappier[askai_bg_color]">%s</label>', __( 'AskAI Background Color', 'dappier' ) );
@@ -542,7 +541,6 @@ class Dappier_Settings {
 	 */
 	function askai_theme_color_callback() {
 		$value = dappier_get_option( 'askai_theme_color' );
-		$value = ! is_null( $value ) ? $value : '#674ad9';
 
 		echo '<div class="dappier-step__field">';
 			printf( '<label class="dappier-step__label" for="dappier[askai_theme_color]">%s</label>', __( 'AskAI Theme Color', 'dappier' ) );
