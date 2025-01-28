@@ -64,8 +64,8 @@ function dappier_enqueue_styles() {
 	$styles = 'div[class*="_askAiContainer"] { margin-block: 24px; }';
 
 	// Add inline styles.
-	wp_register_style( 'dappier-askai', false);
-	wp_enqueue_style( 'dappier-askai', );
+	wp_register_style( 'dappier-askai', false );
+	wp_enqueue_style( 'dappier-askai' );
 	wp_add_inline_style( 'dappier-askai', $styles );
 
 	// Not first anymore.
