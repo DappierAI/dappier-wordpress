@@ -13,7 +13,7 @@ class Dappier_AskAi {
 	 * Construct the class.
 	 */
 	function __construct( $args = [] ) {
-		$this->args = wp_parse_args( $args, $this->get_default_attributes(), 'dappier_askai' );
+		$this->args = wp_parse_args( $args, $this->get_attributes(), 'dappier_askai' );
 	}
 
 	/**
@@ -56,13 +56,13 @@ class Dappier_AskAi {
 	}
 
 	/**
-	 * Get default attributes.
+	 * Get attributes.
 	 *
 	 * @since 0.7.0
 	 *
 	 * @return array
 	 */
-	function get_default_attributes() {
+	function get_attributes() {
 		$api_key     = dappier_get_option( 'api_key' );
 		$aimodel_id  = dappier_get_option( 'aimodel_id' );
 		$widget_id   = dappier_get_option( 'widget_id' );
@@ -91,25 +91,47 @@ class Dappier_AskAi {
 
 		// Set attributes.
 		$attributes = [
-			'widgetId'                     => $widget_id,
-			'title'                        => $title_text,
-			'mainBackgroundColor'          => $bg_color,
-			'mainTextColor'                => $fg_color,
-			'themeColor'                   => $theme_color,
-			'mainLogoUrl'                  => $logo_url,
-			'mainLogoWidth'                => $logo_width,
-			'chatIconUrl'                  => $icon_url,
-			'chatIconWidth'                => $icon_width,
-			'enablePromptSuggestions'      => 'true',
-			'enableContentRecommendations' => 'true',
-			'showAttributionLinks'         => 'true',
-			'enableSiteName'               => 'true',
-			'enableTitle'                  => 'title' === $branding ? 'true' : 'false',
-			'initialSearchQuery'           => is_search() ? get_search_query() : '',
+			'widgetId'                        => $widget_id,
+			'title'                           => $title_text,
+			'searchPlaceholderText'           => '',
+			'askButtonText'                   => '',
+			'mainLogoUrl'                     => $logo_url,
+			'chatIconUrl'                     => $icon_url,
+			'mainBackgroundColor'             => $bg_color,
+			'themeColor'                      => $theme_color,
+			'promptSuggestionBackgroundColor' => '',
+			'promptSuggestionTextColor'       => '',
+			'messageBackgroundColor'          => '',
+			'messageTextColor'                => $fg_color,
+			'titleColor'                      => '',
+			'containerRadius'                 => '',
+			'elementRadius'                   => '',
+			'mainLogoWidthMobile'             => $logo_width,
+			'chatIconWidthMobile'             => $icon_width,
+			'mainLogoWidthDesktop'            => $logo_width,
+			'chatIconWidthDesktop'            => $icon_width,
+			'fontSizeHeaderMobile'            => '',
+			'fontSizeDefaultMobile'           => '',
+			'fontSizeHeaderDesktop'           => '',
+			'fontSizeDefaultDesktop'          => '',
+			'fixedHeight'                     => '', //mobile only.
+			'maxHeight'                       => '', //desktop only.
+			'enableTitle'                     => 'title' === $branding ? 'true' : 'false',
+			'enablePromptSuggestions'         => 'true',
+			'enableContentRecommendations'    => 'true',
+			'enableSiteName'                  => 'true', // for content recommendation.
+			'referringUrl'                    => '',
+			'initialSearchQuery'              => is_search() ? get_search_query() : '',
+			'disclaimerLink'                  => '',
 		];
 
 		// Allow filtering of attributes.
 		$attributes = apply_filters( 'dappier_askai_attributes', $attributes );
+
+		// Remove empty attributes.
+		$attributes = array_filter( $attributes, function( $value ) {
+			return '' !== $value && null !== $value;
+		});
 
 		return $attributes;
 	}
