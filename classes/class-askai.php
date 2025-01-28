@@ -8,12 +8,24 @@ defined( 'ABSPATH' ) || die;
  */
 class Dappier_AskAi {
 	protected $args;
+	protected $location;
 
 	/**
 	 * Construct the class.
 	 */
 	function __construct( $args = [] ) {
 		$this->args = wp_parse_args( $args, $this->get_attributes(), 'dappier_askai' );
+	}
+
+	/**
+	 * Set the location.
+	 *
+	 * @since 0.7.0
+	 *
+	 * @return void
+	 */
+	function set_location( $location ) {
+		$this->location = $location;
 	}
 
 	/**
@@ -29,6 +41,11 @@ class Dappier_AskAi {
 		// Bail if not configured.
 		if ( ! dappier_is_configured() ) {
 			return $html;
+		}
+
+		// If location is before/after, enqueue the styles.
+		if ( 'before' === $this->location || 'after' === $this->location ) {
+			dappier_enqueue_styles();
 		}
 
 		// Enqueue the instance.

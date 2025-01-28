@@ -37,6 +37,9 @@ function dappier_enqueue_scripts() {
 		return;
 	}
 
+	// Enqueue the styles.
+	dappier_enqueue_styles();
+
 	// Enqueue the script.
 	dappier_enqueue_loader();
 }
@@ -115,9 +118,14 @@ function dappier_add_askai( $content ) {
 		return $content;
 	}
 
-	// Get askai.
+	// Instantiate the askai instance.
 	$askai = new Dappier_AskAi;
-	$html   = $askai->get();
+
+	// Set the location.
+	$askai->set_location( $location );
+
+	// Get the HTML.
+	$html = $askai->get();
 
 	// If before.
 	if ( 'before' === $location ) {
