@@ -4,7 +4,7 @@
 	"description": "Integrate Dappier AI on your WordPress site.",
 	"main": "index.js",
 	"scripts": {
-		"dev": "mix",
+		"build": "mix",
 		"production": "mix --production",
 		"watch": "mix watch"
 	},
