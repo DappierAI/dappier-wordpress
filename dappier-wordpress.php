@@ -157,26 +157,11 @@ final class Dappier_Plugin {
 			return;
 		}
 
-		// // Setup the updater.
-		// $updater = PucFactory::buildUpdateChecker( 'https://github.com/maithemewp/plugin-slug/', __FILE__, 'mai-user-post' );
+		// Setup the updater.
+		$updater = PucFactory::buildUpdateChecker( 'https://github.com/DappierAI/dappier-wordpress/', __FILE__, 'dappier-wordpress' );
 
-		// // Set the branch that contains the stable release.
-		// $updater->setBranch( 'main' );
-
-		// // Maybe set github api token.
-		// if ( defined( 'MAI_GITHUB_API_TOKEN' ) ) {
-		// 	$updater->setAuthentication( MAI_GITHUB_API_TOKEN );
-		// }
-
-		// // Add icons for Dashboard > Updates screen.
-		// if ( function_exists( 'mai_get_updater_icons' ) && $icons = mai_get_updater_icons() ) {
-		// 	$updater->addResultFilter(
-		// 		function ( $info ) use ( $icons ) {
-		// 			$info->icons = $icons;
-		// 			return $info;
-		// 		}
-		// 	);
-		// }
+		// Set the branch that contains the stable release.
+		$updater->setBranch( 'production' );
 	}
 
 	/**
