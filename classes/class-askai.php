@@ -5,6 +5,8 @@ defined( 'ABSPATH' ) || die;
 
 /**
  * Adds settings page.
+ *
+ * @since 0.1.0
  */
 class Dappier_AskAi {
 	protected $args;
@@ -12,9 +14,20 @@ class Dappier_AskAi {
 
 	/**
 	 * Construct the class.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param array $args The arguments.
+	 *
+	 * @return void
 	 */
 	function __construct( $args = [] ) {
 		$this->args = wp_parse_args( $args, $this->get_attributes(), 'dappier_askai' );
+
+		// Sanitize.
+		foreach ( $this->args as $key => $value ) {
+			$this->args[ sanitize_key( $key ) ] = esc_attr( $value );
+		}
 	}
 
 	/**
@@ -25,7 +38,29 @@ class Dappier_AskAi {
 	 * @return void
 	 */
 	function set_location( $location ) {
-		$this->location = $location;
+		$this->location = trim( preg_replace( '/[^a-z]+/', '_', strtolower( $location ) ), '_' );
+	}
+
+	/**
+	 * Get the location.
+	 *
+	 * @since 0.7.0
+	 *
+	 * @return string
+	 */
+	function get_location() {
+		return $this->location;
+	}
+
+	/**
+	 * Get the args.
+	 *
+	 * @since 0.7.0
+	 *
+	 * @return array
+	 */
+	function get_args() {
+		return $this->args;
 	}
 
 	/**
@@ -35,7 +70,7 @@ class Dappier_AskAi {
 	 *
 	 * @return void
 	 */
-	function get() {
+	function render() {
 		$html = '';
 
 		// Bail if not configured.
@@ -59,14 +94,14 @@ class Dappier_AskAi {
 
 		// Build attributes.
 		foreach ( $attributes as $key => $value ) {
-			$attr .= sprintf( ' %s="%s"', esc_attr( $key ), esc_attr( $value ) );
+			$attr .= sprintf( ' %s="%s"', sanitize_key( $key ), esc_attr( $value ) );
 		}
 
 		// Add the HTML.
 		$html .= sprintf( '<dappier-ask-ai-widget%s></dappier-ask-ai-widget>', $attr );
 
 		// Allow filtering of HTML.
-		$html = apply_filters( 'dappier_askai_html', $html, $attr );
+		$html = apply_filters( 'dappier_askai_html', $html, $this );
 
 		// Return the instance.
 		return $html;
