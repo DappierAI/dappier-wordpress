@@ -12,6 +12,7 @@ defined( 'ABSPATH' ) || die;
  */
 add_shortcode( 'dappier_askai', function( $atts ) {
 	$map = [
+		'location'                           => 'location',
 		'widget_id'                          => 'widgetId',
 		'title'                              => 'title',
 		'search_placeholder_text'            => 'searchPlaceholderText',
@@ -47,6 +48,12 @@ add_shortcode( 'dappier_askai', function( $atts ) {
 		'disclaimer_link'                    => 'disclaimerLink',
 	];
 
+	// Get the location.
+	$location = isset( $atts['location'] ) ? $atts['location'] : 'shortcode';
+
+	// Unset the location.
+	unset( $atts['location'] );
+
 	// Map attribute keys to the actual keys.
 	foreach ( $atts as $key => $value ) {
 		if ( isset( $map[ $key ] ) ) {
@@ -58,6 +65,9 @@ add_shortcode( 'dappier_askai', function( $atts ) {
 	// Instantiate the class.
 	$askai = new Dappier_AskAi( $atts );
 
+	// Set the location.
+	$askai->set_location( $location );
+
 	// Return the HTML.
-	return $askai->get();
+	return $askai->render();
 });
