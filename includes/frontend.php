@@ -125,7 +125,7 @@ function dappier_add_askai( $content ) {
 	$askai->set_location( $location );
 
 	// Get the HTML.
-	$html = $askai->get();
+	$html = $askai->render();
 
 	// If before.
 	if ( 'before' === $location ) {
