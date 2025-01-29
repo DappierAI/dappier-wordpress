@@ -22,12 +22,16 @@ class Dappier_AskAi {
 	 * @return void
 	 */
 	function __construct( $args = [] ) {
-		$this->args = wp_parse_args( $args, $this->get_attributes(), 'dappier_askai' );
+		$args  = wp_parse_args( $args, $this->get_attributes() );
+		$final = [];
 
 		// Sanitize.
-		foreach ( $this->args as $key => $value ) {
-			$this->args[ sanitize_key( $key ) ] = esc_attr( $value );
+		foreach ( $args as $key => $value ) {
+			$final[ esc_attr( $key ) ] = esc_attr( $value );
 		}
+
+		// Set the args.
+		$this->args = $final;
 	}
 
 	/**
@@ -94,7 +98,7 @@ class Dappier_AskAi {
 
 		// Build attributes.
 		foreach ( $attributes as $key => $value ) {
-			$attr .= sprintf( ' %s="%s"', sanitize_key( $key ), esc_attr( $value ) );
+			$attr .= sprintf( ' %s="%s"', $key, $value );
 		}
 
 		// Add the HTML.
