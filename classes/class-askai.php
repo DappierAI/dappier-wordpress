@@ -133,7 +133,7 @@ class Dappier_AskAi {
 		$branding    = is_null( $branding ) ? 'logo' : $branding;
 		$image_size  = has_image_size( 'medium' ) ? 'medium' : 'full';
 		$logo_id     = dappier_get_option( 'askai_logo' );
-		$logo_id     = is_null( $logo_id ) ? (int) get_theme_mod( 'custom_logo' ) : $logo_id;
+		$logo_id     = ! $logo_id ? (int) get_theme_mod( 'custom_logo' ) : $logo_id;
 		$logo_url    = $logo_id ? wp_get_attachment_image_url( $logo_id, $image_size ) : 'https://assets.dappier.com/dappier_logo.png';
 		$logo_url    = 'logo' === $branding ? $logo_url : '';
 		$logo_width  = dappier_get_option( 'askai_logo_width' );
