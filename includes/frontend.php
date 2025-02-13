@@ -37,9 +37,6 @@ function dappier_enqueue_scripts() {
 		return;
 	}
 
-	// Enqueue the styles.
-	dappier_enqueue_styles();
-
 	// Enqueue the script.
 	dappier_enqueue_loader();
 }
@@ -119,7 +116,10 @@ function dappier_add_askai( $content ) {
 	}
 
 	// Instantiate the askai instance.
-	$askai = new Dappier_AskAi;
+	$askai = new Dappier_AskAi( [
+		'containerMarginDesktop' => '0 0 1rem',
+		'containerMarginMobile'  => '0 0 1rem',
+	] );
 
 	// Set the location.
 	$askai->set_location( $location );

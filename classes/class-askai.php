@@ -82,11 +82,6 @@ class Dappier_AskAi {
 			return $html;
 		}
 
-		// If location is before/after, enqueue the styles.
-		if ( 'before' === $this->location || 'after' === $this->location ) {
-			dappier_enqueue_styles();
-		}
-
 		// Enqueue the instance.
 		dappier_enqueue_loader();
 
@@ -153,14 +148,28 @@ class Dappier_AskAi {
 			'askButtonText'                   => '',
 			'mainLogoUrl'                     => $logo_url,
 			'chatIconUrl'                     => $icon_url,
+			'userChatIconColor'               => $fg_color,
+			'askButtonTextColor'              => '',
+			'askButtonBackgroundColor'        => '',
 			'mainBackgroundColor'             => $bg_color,
 			'themeColor'                      => $theme_color,
 			'promptSuggestionBackgroundColor' => '',
 			'promptSuggestionTextColor'       => '',
 			'messageBackgroundColor'          => '',
 			'messageTextColor'                => $fg_color,
+			'searchBoxBackgroundColor'        => '',
+			'searchBoxTextColor'              => '',
+			'searchPlaceholderTextColor'      => '',
 			'titleColor'                      => '',
+			'contentRecSiteNameColor'         => '',
+			'containerMarginDesktop'          => '',
+			'containerMarginMobile'           => '',
+			'containerPaddingDesktop'         => '1rem',
+			'containerPaddingMobile'          => '.75rem',
 			'containerRadius'                 => '',
+			'promptSuggestionRadius'          => '',
+			'searchBoxRadius'                 => '',
+			'askButtonRadius'                 => '',
 			'elementRadius'                   => '',
 			'mainLogoWidthMobile'             => $logo_width,
 			'chatIconWidthMobile'             => $icon_width,
@@ -172,12 +181,16 @@ class Dappier_AskAi {
 			'fontSizeDefaultDesktop'          => '',
 			'fixedHeight'                     => '', //mobile only.
 			'maxHeight'                       => '', //desktop only.
+			'maxHeightMobile'                 => '',
+			'heightModeMobile'                => 'fixed', // fixed or max, default is fixed if empty.
 			'enableTitle'                     => 'title' === $branding ? 'true' : 'false',
 			'enablePromptSuggestions'         => 'true',
 			'enableContentRecommendations'    => 'true',
+			'enableRelatedContentNewWindow'   => 'false', // open recommended content in new window
 			'enableSiteName'                  => 'true', // for content recommendation.
 			'referringUrl'                    => '',
 			'initialSearchQuery'              => is_search() ? get_search_query() : '',
+			'showInitialSearchQuery'          => 'false', // show the initial search query in the initial chat response.
 			'disclaimerLink'                  => '',
 		];
 

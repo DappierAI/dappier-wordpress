@@ -45,34 +45,6 @@ function dappier_is_configured() {
 }
 
 /**
- * Enqueue the askai styles.
- *
- * @since 0.7.0
- *
- * @return void
- */
-function dappier_enqueue_styles() {
-	// First time flag.
-	static $first = true;
-
-	// Bail if not the first.
-	if ( ! $first ) {
-		return;
-	}
-
-	// Define the styles.
-	$styles = 'div[class*="_askAiContainer"] { margin-block: 24px; }';
-
-	// Add inline styles.
-	wp_register_style( 'dappier-askai', false );
-	wp_enqueue_style( 'dappier-askai' );
-	wp_add_inline_style( 'dappier-askai', $styles );
-
-	// Not first anymore.
-	$first = false;
-}
-
-/**
  * Enqueue the askai script.
  *
  * @since 0.7.0
