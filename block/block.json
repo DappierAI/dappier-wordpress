@@ -9,7 +9,8 @@
 	"keywords": ["ai", "chat", "ask"],
 	"example": {},
 	"supports": {
-		"html": false
+		"html": false,
+		"customClassName": false
 	},
 	"attributes": {
 		"mainBackgroundColor": {

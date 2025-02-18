@@ -41,8 +41,6 @@ function render_block_dappier_askai( $attributes, $content, $block ) {
 			return '';
 		}
 
-		// ray( 'before', $attributes );
-
 		// Ensure attributes are set.
 		// $attributes = wp_parse_args( $attributes, [
 		// 	'searchPlaceholderText'           => '',

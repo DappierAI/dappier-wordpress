@@ -16,8 +16,10 @@ import {
 	PanelBody,
 	TextControl,
 	ToggleControl,
-	Placeholder,
+	TabPanel,
+	Icon,
 } from '@wordpress/components';
+import { cog, styles } from '@wordpress/icons';
 import ServerSideRender from '@wordpress/server-side-render';
 
 /**
@@ -43,71 +45,100 @@ export default function Edit({ attributes, setAttributes }) {
 		showInitialSearchQuery,
 	} = attributes;
 
+	const tabs = [
+		{
+			icon: <Icon icon={cog} size={24} />,
+			name: 'settings',
+			title: __('Settings', 'dappier-wordpress'),
+			className: 'tab-one',
+		},
+		{
+			icon: <Icon icon={styles} size={24} />,
+			name: 'styles',
+			title: __('Styles', 'dappier-wordpress'),
+			className: 'tab-two',
+		},
+	];
+
 	return (
 		<>
 			<InspectorControls>
-				<PanelColorSettings
-					title={__('Color', 'dappier-wordpress')}
-					colorSettings={[
-						{
-							value: mainBackgroundColor,
-							onChange: (color) => setAttributes({ mainBackgroundColor: color }),
-							label: __('Main Background', 'dappier-wordpress')
-						},
-						{
-							value: themeColor,
-							onChange: (color) => setAttributes({ themeColor: color }),
-							label: __('Accent Color', 'dappier-wordpress')
-						},
-						{
-							value: promptSuggestionBackgroundColor,
-							onChange: (color) => setAttributes({ promptSuggestionBackgroundColor: color }),
-							label: __('Prompt Suggestion Background', 'dappier-wordpress')
-						},
-						{
-							value: promptSuggestionTextColor,
-							onChange: (color) => setAttributes({ promptSuggestionTextColor: color }),
-							label: __('Prompt Suggestion Text', 'dappier-wordpress')
-						},
-						{
-							value: askButtonTextColor,
-							onChange: (color) => setAttributes({ askButtonTextColor: color }),
-							label: __('Ask Button Text', 'dappier-wordpress')
-						},
-						{
-							value: askButtonBackgroundColor,
-							onChange: (color) => setAttributes({ askButtonBackgroundColor: color }),
-							label: __('Ask Button Background', 'dappier-wordpress')
+				<TabPanel
+					className="dappier-inspector-tabs"
+					activeClass="is-active"
+					tabs={tabs}
+				>
+					{(tab) => {
+						if (tab.name === 'settings') {
+							return (
+								<PanelBody>
+									<TextControl
+										label={__('Search Placeholder Text', 'dappier-wordpress')}
+										value={searchPlaceholderText}
+										onChange={(value) => setAttributes({ searchPlaceholderText: value })}
+									/>
+									<TextControl
+										label={__('Ask Button Text', 'dappier-wordpress')}
+										value={askButtonText}
+										onChange={(value) => setAttributes({ askButtonText: value })}
+									/>
+									<ToggleControl
+										label={__('Enable Prompt Suggestions', 'dappier-wordpress')}
+										checked={enablePromptSuggestions}
+										onChange={(value) => setAttributes({ enablePromptSuggestions: value })}
+									/>
+									<ToggleControl
+										label={__('Enable Content Recommendations', 'dappier-wordpress')}
+										checked={enableContentRecommendations}
+										onChange={(value) => setAttributes({ enableContentRecommendations: value })}
+									/>
+									<ToggleControl
+										label={__('Show Initial Search Query', 'dappier-wordpress')}
+										checked={showInitialSearchQuery}
+										onChange={(value) => setAttributes({ showInitialSearchQuery: value })}
+									/>
+								</PanelBody>
+							);
 						}
-					]}
-				/>
-				<PanelBody title={__('General', 'dappier-wordpress')}>
-					<TextControl
-						label={__('Search Placeholder Text', 'dappier-wordpress')}
-						value={searchPlaceholderText}
-						onChange={(value) => setAttributes({ searchPlaceholderText: value })}
-					/>
-					<TextControl
-						label={__('Ask Button Text', 'dappier-wordpress')}
-						value={askButtonText}
-						onChange={(value) => setAttributes({ askButtonText: value })}
-					/>
-					<ToggleControl
-						label={__('Enable Prompt Suggestions', 'dappier-wordpress')}
-						checked={enablePromptSuggestions}
-						onChange={(value) => setAttributes({ enablePromptSuggestions: value })}
-					/>
-					<ToggleControl
-						label={__('Enable Content Recommendations', 'dappier-wordpress')}
-						checked={enableContentRecommendations}
-						onChange={(value) => setAttributes({ enableContentRecommendations: value })}
-					/>
-					<ToggleControl
-						label={__('Show Initial Search Query', 'dappier-wordpress')}
-						checked={showInitialSearchQuery}
-						onChange={(value) => setAttributes({ showInitialSearchQuery: value })}
-					/>
-				</PanelBody>
+						return (
+							<PanelColorSettings
+								title={__('Color Settings', 'dappier-wordpress')}
+								colorSettings={[
+									{
+										value: mainBackgroundColor,
+										onChange: (color) => setAttributes({ mainBackgroundColor: color }),
+										label: __('Main Background', 'dappier-wordpress')
+									},
+									{
+										value: themeColor,
+										onChange: (color) => setAttributes({ themeColor: color }),
+										label: __('Accent Color', 'dappier-wordpress')
+									},
+									{
+										value: promptSuggestionBackgroundColor,
+										onChange: (color) => setAttributes({ promptSuggestionBackgroundColor: color }),
+										label: __('Prompt Suggestion Background', 'dappier-wordpress')
+									},
+									{
+										value: promptSuggestionTextColor,
+										onChange: (color) => setAttributes({ promptSuggestionTextColor: color }),
+										label: __('Prompt Suggestion Text', 'dappier-wordpress')
+									},
+									{
+										value: askButtonTextColor,
+										onChange: (color) => setAttributes({ askButtonTextColor: color }),
+										label: __('Ask Button Text', 'dappier-wordpress')
+									},
+									{
+										value: askButtonBackgroundColor,
+										onChange: (color) => setAttributes({ askButtonBackgroundColor: color }),
+										label: __('Ask Button Background', 'dappier-wordpress')
+									}
+								]}
+							/>
+						);
+					}}
+				</TabPanel>
 			</InspectorControls>
 
 			<div {...useBlockProps()}>

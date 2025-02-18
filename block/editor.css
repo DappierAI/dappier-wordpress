@@ -1,3 +1,11 @@
+.dappier-inspector-tabs .components-tab-panel__tabs {
+    display: flex;
+}
+
+.dappier-inspector-tabs .components-tab-panel__tabs-item {
+    flex: 1;
+}
+
 .wp-block-dappier-askai > * {
 	pointer-events: none;
 }
