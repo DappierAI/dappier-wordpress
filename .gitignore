@@ -46,3 +46,8 @@ mix-manifest.json
 .env.development.local
 .env.test.local
 .env.production.local
+
+# Cache directories
+.cache/
+.npm/
+.eslintcache

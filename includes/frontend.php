@@ -17,7 +17,7 @@ function dappier_register_scripts() {
 		return;
 	}
 
-	wp_register_script( 'dappier-loader', 'https://assets.dappier.com/widget/dappier-loader.min.js', [], null, [] );
+	wp_register_script( 'dappier-loader', 'https://assets.dappier.com/widget/dappier-loader.min.js', [], null, ['in_footer' => false] );
 }
 
 add_action( 'wp_enqueue_scripts', 'dappier_enqueue_scripts' );
@@ -27,13 +27,24 @@ add_action( 'wp_enqueue_scripts', 'dappier_enqueue_scripts' );
  * @since  0.1.0
  */
 function dappier_enqueue_scripts() {
-	// Bail if not a single post.
-	if ( ! is_singular( 'post' ) ) {
+	// Bail if not configured.
+	if ( ! dappier_is_configured() ) {
 		return;
 	}
 
+	// Bail if not a single post/page/cpt.
+	if ( ! is_singular() ) {
+		return;
+	}
+
+	global $post;
+
 	// Bail not displaying.
-	if ( ! ( dappier_is_configured() && in_array( dappier_get_option( 'askai_location' ), [ 'before', 'after' ], true ) ) ) {
+	if ( ! (
+		( 'post' === get_post_type() && in_array( dappier_get_option( 'askai_location' ), [ 'before', 'after' ], true ) )
+		|| has_block( 'dappier/askai' )
+		|| has_shortcode( $post->post_content, 'dappier_askai' )
+		) ) {
 		return;
 	}
 
@@ -77,7 +88,6 @@ function dappier_add_script_attributes( $tag, $handle ) {
 	// Loop through tags.
 	while ( $tags->next_tag( [ 'tag_name' => 'script' ] ) ) {
 		$tags->set_attribute( 'widget-id', esc_attr( $widget_id ) );
-		// $tags->set_attribute( 'env', 'dev' );
 	}
 
 	// Get updated tag.

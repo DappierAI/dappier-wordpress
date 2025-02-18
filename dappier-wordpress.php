@@ -121,6 +121,9 @@ final class Dappier_Plugin {
 		foreach ( glob( plugin_dir_path( __FILE__ ) . 'classes/*.php' ) as $file ) { include $file; }
 		foreach ( glob( plugin_dir_path( __FILE__ ) . 'includes/*.php' ) as $file ) { include $file; }
 
+		// include block.
+		require_once __DIR__ . '/block/block.php';
+
 		// Instantiate classes.
 		$settings = new Dappier_Settings;
 		$endpoint = new Dappier_Endpoints;
