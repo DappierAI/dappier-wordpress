@@ -182,7 +182,7 @@ class Dappier_AskAi {
 			'fixedHeight'                     => '', //mobile only.
 			'maxHeight'                       => '', //desktop only.
 			'maxHeightMobile'                 => '',
-			'heightModeMobile'                => 'fixed', // fixed or max, default is fixed if empty.
+			'heightModeMobile'                => 'max', // fixed or max, default is fixed if empty.
 			'enableTitle'                     => 'title' === $branding ? 'true' : 'false',
 			'enablePromptSuggestions'         => 'true',
 			'enableContentRecommendations'    => 'true',
