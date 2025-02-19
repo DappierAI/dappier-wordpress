@@ -61,7 +61,7 @@ function dappier_render_askai_block( $attributes, $content, $block ) {
 
 		// Force these defaults when using the block.
 		$attributes['mainLogoUrl'] = '';
-		$attributes['enableTitle'] = 'false';
+		$attributes['enableTitle'] = false;
 
 		// Instantiate the AskAI class with block attributes.
 		$askai = new Dappier_AskAi( $attributes );

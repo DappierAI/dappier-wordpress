@@ -25,9 +25,9 @@ class Dappier_AskAi {
 		$args  = wp_parse_args( $args, $this->get_attributes() );
 		$final = [];
 
-		// Sanitize.
+		// Sanitize. Typecast to string because we need boolean values to be "true" or "false" instead of 1 or 0/"".
 		foreach ( $args as $key => $value ) {
-			$final[ esc_attr( $key ) ] = esc_attr( $value );
+			$final[ esc_attr( $key ) ] = esc_attr( (string) $value );
 		}
 
 		// Set the args.
@@ -182,13 +182,13 @@ class Dappier_AskAi {
 			'maxHeightMobile'                 => '',
 			'heightModeMobile'                => 'max', // fixed or max, default is fixed if empty.
 			'enableTitle'                     => 'title' === $branding ? 'true' : 'false',
-			'enablePromptSuggestions'         => 'true',
-			'enableContentRecommendations'    => 'true',
-			'enableRelatedContentNewWindow'   => 'false', // open recommended content in new window
-			'enableSiteName'                  => 'true', // for content recommendation.
+			'enablePromptSuggestions'         => true,
+			'enableContentRecommendations'    => true,
+			'enableRelatedContentNewWindow'   => false, // open recommended content in new window
+			'enableSiteName'                  => true, // for content recommendation.
 			'referringUrl'                    => '',
 			'initialSearchQuery'              => is_search() ? get_search_query() : '',
-			'showInitialSearchQuery'          => 'false', // show the initial search query in the initial chat response.
+			'showInitialSearchQuery'          => false, // show the initial search query in the initial chat response.
 			'disclaimerLink'                  => '',
 		];
 
