@@ -139,17 +139,8 @@ function dappier_render_askai_block_preview() {
 				</defs>
 			</g>
 		</svg>
-		<h3 style="
-			margin: 8px 0;
-			color: #1d2327;
-			font-size: 16px;
-			font-weight: 600;
-		"><?php esc_html_e( 'Dappier AskAI Block', 'dappier' ); ?></h3>
-		<p style="
-			margin: 0;
-			color: rgba(0, 0, 0, 0.6);
-			font-size: 13px;
-		"><?php esc_html_e( 'Configure the AskAI module appearance and behavior in the block settings panel.', 'dappier-wordpress' ); ?></p>
+		<h3 style="margin:8px 0;color:#1d2327;font-size:18px;"><?php esc_html_e( 'Dappier AskAI Block', 'dappier' ); ?></h3>
+		<p style="margin:0;color:rgba(0, 0, 0, 0.75);font-size:15px;"><?php esc_html_e( 'Configure the AskAI module appearance and behavior in the block settings panel.', 'dappier-wordpress' ); ?></p>
 	</div>
 	<?php
 	return ob_get_clean();
