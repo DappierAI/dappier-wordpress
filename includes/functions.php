@@ -80,11 +80,16 @@ function dappier_enqueue_loader() {
  */
 function dappier_get_file_version( $filename, $type, $debug = null ) {
 	$version   = DAPPIER_PLUGIN_VERSION;
-	$debug     = is_null( $debug ) ? defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG : false;
-	$path      = $debug ? 'src' : 'build';
-	$suffix    = $debug ? '' : '.min';
+	// $debug     = is_null( $debug ) ? defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG : false;
+	// $path      = $debug ? 'src' : 'build';
+	// $suffix    = $debug ? '' : '.min';
+	$debug     = false;
+	$path      = 'build';
+	$suffix    = '';
 	$filepath  = MAI_ASKNEWS_DIR . "{$path}/{$type}/{$filename}{$suffix}.{$type}";
 	$version  .= '.' . date( 'njYHi', filemtime( $filepath ) );
+
+	ray( $version )->once();
 
 	return $version;
 }
@@ -102,9 +107,12 @@ function dappier_get_file_version( $filename, $type, $debug = null ) {
  * @return string
  */
 function dappier_get_file_url( $filename, $type, $debug = null ) {
-	$debug  = is_null( $debug ) ? defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG : false;
-	$path   = $debug ? 'src' : 'build';
-	$suffix = $debug ? '' : '.min';
+	// $debug     = is_null( $debug ) ? defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG : false;
+	// $path      = $debug ? 'src' : 'build';
+	// $suffix    = $debug ? '' : '.min';
+	$debug     = false;
+	$path      = 'build';
+	$suffix    = '';
 
 	return DAPPIER_PLUGIN_URL . "{$path}/{$type}/{$filename}{$suffix}.{$type}";
 }
