@@ -59,7 +59,7 @@
 		}
 	},
 	"textdomain": "dappier-wordpress",
-	"editorScript": [ "dappier-loader","file:../build/block/block.js"],
+	"editorScript": [ "file:../build/block/block.js" ],
 	"editorStyle": "file:../build/block/editor.css",
 	"viewScript": "dappier-loader"
 }
