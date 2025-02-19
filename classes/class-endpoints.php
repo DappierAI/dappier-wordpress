@@ -153,7 +153,7 @@ class Dappier_Endpoints {
 					'date'           => get_the_date( 'c' ),
 					'date_modified'  => get_the_modified_date( 'c' ),
 					'author'         => get_the_author(),
-					'featured_image' => (string)get_the_post_thumbnail_url( $post_id, 'full' ),
+					'featured_image' => (string) get_the_post_thumbnail_url( $post_id, 'full' ),
 					'excerpt'        => get_the_excerpt(),
 					'content'        => $content,
 					'categories'     => $this->get_terms( $post_id, 'category' ),
