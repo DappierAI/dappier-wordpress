@@ -1100,6 +1100,12 @@ class Dappier_Settings {
 			unset( $details['total_queries_allowed'] );
 		}
 
+		// Unset for now.
+		unset( $details['queries'] );
+		unset( $details['queries_used_month'] );
+		unset( $details['total_queries_allowed'] );
+		unset( $details['rev_share_in_percent'] );
+
 		// Map the details.
 		$map = [
 			'account_id'            => [ 'label' => __( 'Account ID', 'dappier' ), 'sanitize' => 'sanitize_key' ],
