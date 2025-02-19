@@ -114,8 +114,6 @@ class Dappier_AskAi {
 	 * @return array
 	 */
 	function get_attributes() {
-		$api_key     = dappier_get_option( 'api_key' );
-		$aimodel_id  = dappier_get_option( 'aimodel_id' );
 		$widget_id   = dappier_get_option( 'widget_id' );
 		$widget_id   = $widget_id;
 		$bg_color    = dappier_get_option( 'askai_bg_color' );
