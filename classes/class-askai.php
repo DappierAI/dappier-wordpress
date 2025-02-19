@@ -27,7 +27,11 @@ class Dappier_AskAi {
 
 		// Sanitize. Typecast to string because we need boolean values to be "true" or "false" instead of 1 or 0/"".
 		foreach ( $args as $key => $value ) {
-			$final[ esc_attr( $key ) ] = esc_attr( (string) $value );
+			if ( is_bool( $value ) ) {
+				$value = $value ? 'true' : 'false';
+			}
+
+			$final[ esc_attr( $key ) ] = esc_attr( $value );
 		}
 
 		// Set the args.
