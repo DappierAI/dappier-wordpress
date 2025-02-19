@@ -1266,11 +1266,12 @@ class Dappier_Settings {
 		}
 
 		// Get the data.
-		$aimodel_id   = isset( $value['aimodel_id'] ) ? $value['aimodel_id'] : '';
-		$datamodel_id = isset( $value['datamodel_id'] ) ? $value['datamodel_id'] : '';
-		$name         = isset( $value['agent_name'] ) ? trim( $value['agent_name'] ) : '';
-		$desc         = isset( $value['agent_desc'] ) ? trim( $value['agent_desc'] ) : '';
-		$pers         = isset( $value['agent_persona'] ) ? trim( $value['agent_persona'] ) : '';
+		$aimodel_id     = isset( $value['aimodel_id'] ) ? $value['aimodel_id'] : '';
+		$datamodel_id   = isset( $value['datamodel_id'] ) ? $value['datamodel_id'] : '';
+		$external_dm_id = isset( $value['external_dm_id'] ) ? $value['external_dm_id'] : '';
+		$name           = isset( $value['agent_name'] ) ? trim( $value['agent_name'] ) : '';
+		$desc           = isset( $value['agent_desc'] ) ? trim( $value['agent_desc'] ) : '';
+		$pers           = isset( $value['agent_persona'] ) ? trim( $value['agent_persona'] ) : '';
 
 		// If we have a model, and it's not creating a new one.
 		if ( $aimodel_id && '_create_agent' !== $aimodel_id ) {
