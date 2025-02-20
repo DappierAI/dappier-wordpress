@@ -25,8 +25,12 @@ class Dappier_AskAi {
 		$args  = wp_parse_args( $args, $this->get_attributes() );
 		$final = [];
 
-		// Sanitize.
+		// Sanitize. Typecast to string because we need boolean values to be "true" or "false" instead of 1 or 0/"".
 		foreach ( $args as $key => $value ) {
+			if ( is_bool( $value ) ) {
+				$value = $value ? 'true' : 'false';
+			}
+
 			$final[ esc_attr( $key ) ] = esc_attr( $value );
 		}
 
@@ -82,11 +86,6 @@ class Dappier_AskAi {
 			return $html;
 		}
 
-		// If location is before/after, enqueue the styles.
-		if ( 'before' === $this->location || 'after' === $this->location ) {
-			dappier_enqueue_styles();
-		}
-
 		// Enqueue the instance.
 		dappier_enqueue_loader();
 
@@ -119,8 +118,6 @@ class Dappier_AskAi {
 	 * @return array
 	 */
 	function get_attributes() {
-		$api_key     = dappier_get_option( 'api_key' );
-		$aimodel_id  = dappier_get_option( 'aimodel_id' );
 		$widget_id   = dappier_get_option( 'widget_id' );
 		$widget_id   = $widget_id;
 		$bg_color    = dappier_get_option( 'askai_bg_color' );
@@ -133,7 +130,7 @@ class Dappier_AskAi {
 		$branding    = is_null( $branding ) ? 'logo' : $branding;
 		$image_size  = has_image_size( 'medium' ) ? 'medium' : 'full';
 		$logo_id     = dappier_get_option( 'askai_logo' );
-		$logo_id     = is_null( $logo_id ) ? (int) get_theme_mod( 'custom_logo' ) : $logo_id;
+		$logo_id     = ! $logo_id ? (int) get_theme_mod( 'custom_logo' ) : $logo_id;
 		$logo_url    = $logo_id ? wp_get_attachment_image_url( $logo_id, $image_size ) : 'https://assets.dappier.com/dappier_logo.png';
 		$logo_url    = 'logo' === $branding ? $logo_url : '';
 		$logo_width  = dappier_get_option( 'askai_logo_width' );
@@ -144,6 +141,7 @@ class Dappier_AskAi {
 		$icon_url    = $icon_id ? wp_get_attachment_image_url( $icon_id, $image_size ) : 'https://assets.dappier.com/dappier_logo_small.png';
 		$icon_width  = dappier_get_option( 'askai_icon_width' );
 		$icon_width  = $icon_width ?: '24';
+		$query       = is_search() ? get_search_query() : '';
 
 		// Set attributes.
 		$attributes = [
@@ -153,14 +151,28 @@ class Dappier_AskAi {
 			'askButtonText'                   => '',
 			'mainLogoUrl'                     => $logo_url,
 			'chatIconUrl'                     => $icon_url,
+			'userChatIconColor'               => $fg_color,
+			'askButtonTextColor'              => '',
+			'askButtonBackgroundColor'        => '',
 			'mainBackgroundColor'             => $bg_color,
 			'themeColor'                      => $theme_color,
 			'promptSuggestionBackgroundColor' => '',
 			'promptSuggestionTextColor'       => '',
 			'messageBackgroundColor'          => '',
 			'messageTextColor'                => $fg_color,
+			'searchBoxBackgroundColor'        => '',
+			'searchBoxTextColor'              => '',
+			'searchPlaceholderTextColor'      => '',
 			'titleColor'                      => '',
+			'contentRecSiteNameColor'         => '',
+			'containerMarginDesktop'          => '',
+			'containerMarginMobile'           => '',
+			'containerPaddingDesktop'         => '1rem',
+			'containerPaddingMobile'          => '.75rem',
 			'containerRadius'                 => '',
+			'promptSuggestionRadius'          => '',
+			'searchBoxRadius'                 => '',
+			'askButtonRadius'                 => '',
 			'elementRadius'                   => '',
 			'mainLogoWidthMobile'             => $logo_width,
 			'chatIconWidthMobile'             => $icon_width,
@@ -172,12 +184,16 @@ class Dappier_AskAi {
 			'fontSizeDefaultDesktop'          => '',
 			'fixedHeight'                     => '', //mobile only.
 			'maxHeight'                       => '', //desktop only.
+			'maxHeightMobile'                 => '',
+			'heightModeMobile'                => 'max', // fixed or max, default is fixed if empty.
 			'enableTitle'                     => 'title' === $branding ? 'true' : 'false',
-			'enablePromptSuggestions'         => 'true',
-			'enableContentRecommendations'    => 'true',
-			'enableSiteName'                  => 'true', // for content recommendation.
+			'enablePromptSuggestions'         => true,
+			'enableContentRecommendations'    => true,
+			'enableRelatedContentNewWindow'   => false, // open recommended content in new window
+			'enableSiteName'                  => true, // for content recommendation.
 			'referringUrl'                    => '',
-			'initialSearchQuery'              => is_search() ? get_search_query() : '',
+			'initialSearchQuery'              => $query,
+			'showInitialSearchQuery'          => false, // show the initial search query in the initial chat response.
 			'disclaimerLink'                  => '',
 		];
 

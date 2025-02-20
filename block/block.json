@@ -1,0 +1,65 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "dappier/askai",
+	"version": "0.1.0",
+	"title": "Dappier AskAI",
+	"category": "widgets",
+	"description": "Add a Dappier AskAI widget to your content.",
+	"keywords": ["ai", "chat", "ask"],
+	"example": {},
+	"supports": {
+		"html": false,
+		"customClassName": false
+	},
+	"attributes": {
+		"mainBackgroundColor": {
+			"type": "string",
+			"default": ""
+		},
+		"searchPlaceholderText": {
+			"type": "string",
+			"default": ""
+		},
+		"askButtonText": {
+			"type": "string",
+			"default": ""
+		},
+		"askButtonTextColor": {
+			"type": "string",
+			"default": ""
+		},
+		"askButtonBackgroundColor": {
+			"type": "string",
+			"default": ""
+		},
+		"themeColor": {
+			"type": "string",
+			"default": ""
+		},
+		"promptSuggestionBackgroundColor": {
+			"type": "string",
+			"default": ""
+		},
+		"promptSuggestionTextColor": {
+			"type": "string",
+			"default": ""
+		},
+		"enablePromptSuggestions": {
+			"type": "boolean",
+			"default": true
+		},
+		"enableContentRecommendations": {
+			"type": "boolean",
+			"default": true
+		},
+		"showInitialSearchQuery": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"textdomain": "dappier-wordpress",
+	"editorScript": [ "dappier-loader", "file:../build/block/block.js" ],
+	"editorStyle": "file:../build/block/editor.css",
+	"viewScript": "dappier-loader"
+}
