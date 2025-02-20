@@ -83,12 +83,12 @@ export default function Edit({ attributes, setAttributes }) {
 										onChange={(value) => setAttributes({ askButtonText: value })}
 									/>
 									<ToggleControl
-										label={__('Enable Prompt Suggestions', 'dappier-wordpress')}
+										label={__('Show Prompt Suggestions', 'dappier-wordpress')}
 										checked={enablePromptSuggestions}
 										onChange={(value) => setAttributes({ enablePromptSuggestions: value })}
 									/>
 									<ToggleControl
-										label={__('Enable Content Recommendations', 'dappier-wordpress')}
+										label={__('Show Content Recommendations', 'dappier-wordpress')}
 										checked={enableContentRecommendations}
 										onChange={(value) => setAttributes({ enableContentRecommendations: value })}
 									/>

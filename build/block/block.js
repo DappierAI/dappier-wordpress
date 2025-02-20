@@ -114,13 +114,13 @@ function Edit({
           askButtonText: value
         })
       }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
-        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Enable Prompt Suggestions', 'dappier-wordpress'),
+        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Show Prompt Suggestions', 'dappier-wordpress'),
         checked: enablePromptSuggestions,
         onChange: value => setAttributes({
           enablePromptSuggestions: value
         })
       }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
-        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Enable Content Recommendations', 'dappier-wordpress'),
+        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Show Content Recommendations', 'dappier-wordpress'),
         checked: enableContentRecommendations,
         onChange: value => setAttributes({
           enableContentRecommendations: value
