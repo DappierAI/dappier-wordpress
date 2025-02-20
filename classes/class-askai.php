@@ -141,6 +141,7 @@ class Dappier_AskAi {
 		$icon_url    = $icon_id ? wp_get_attachment_image_url( $icon_id, $image_size ) : 'https://assets.dappier.com/dappier_logo_small.png';
 		$icon_width  = dappier_get_option( 'askai_icon_width' );
 		$icon_width  = $icon_width ?: '24';
+		$query       = is_search() ? get_search_query() : '';
 
 		// Set attributes.
 		$attributes = [
@@ -191,7 +192,7 @@ class Dappier_AskAi {
 			'enableRelatedContentNewWindow'   => false, // open recommended content in new window
 			'enableSiteName'                  => true, // for content recommendation.
 			'referringUrl'                    => '',
-			'initialSearchQuery'              => is_search() ? get_search_query() : '',
+			'initialSearchQuery'              => $query,
 			'showInitialSearchQuery'          => false, // show the initial search query in the initial chat response.
 			'disclaimerLink'                  => '',
 		];

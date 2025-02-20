@@ -32,10 +32,18 @@ function dappier_askai_block_init() {
  */
 function dappier_render_askai_block( $attributes, $content, $block ) {
 	try {
+		// Check if we're in the block editor.
+		$editor = defined('REST_REQUEST') && true === REST_REQUEST && 'edit' === filter_input( INPUT_GET, 'context', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+
+		// Build error function.
+		$error = function( $message ) {
+			return '<p style="padding:8px 12px;background-color:#f8d7da;color:#721c24;border:1px solid #f5c6cb;border-radius:4px;">' . $message . '</p>';
+		};
+
 		// Bail if not configured.
 		if ( ! function_exists( 'dappier_is_configured' ) || ! dappier_is_configured() ) {
-			if ( is_admin() ) {
-				return '<p>' . esc_html__( 'Dappier is not configured. Please go to the Dappier settings page to configure it.', 'dappier' ) . '</p>';
+			if ( $editor ) {
+				return $error( 'Dappier is not properly configured. Please go to the Dappier settings page to configure it.' );
 			}
 
 			return '';
@@ -73,7 +81,7 @@ function dappier_render_askai_block( $attributes, $content, $block ) {
 		// Ensure we're returning a string.
 		if ( empty( $html ) ) {
 			if ( $editor ) {
-				return '<p>' . esc_html__( 'The AskAI widget is not rendering. Please check your configuration.', 'dappier' ) . '</p>';
+				return $error( 'The Dappier AskAI module is not rendering. Please check your configuration.' );
 			}
 
 			return '';
@@ -83,7 +91,7 @@ function dappier_render_askai_block( $attributes, $content, $block ) {
 
 	} catch ( Exception $e ) {
 		if ( $editor) {
-			return '<p>' . esc_html__( 'Error rendering AskAI block: ', 'dappier' ) . esc_html( $e->getMessage() ) . '</p>';
+			return $error( 'Error rendering AskAI block: ' . $e->getMessage() );
 		}
 		return '';
 	}

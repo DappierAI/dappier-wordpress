@@ -139,6 +139,13 @@ export default function Edit({ attributes, setAttributes }) {
 						);
 					}}
 				</TabPanel>
+				<div style={{ padding: '0 16px 16px' }}>
+					<p style={{ marginBottom: '8px' }}>
+						<a href={'/wp-admin/admin.php?page=dappier'}>
+							{__('Dappier Settings →', 'dappier-wordpress')}
+						</a>
+					</p>
+				</div>
 			</InspectorControls>
 
 			<div {...useBlockProps()}>
