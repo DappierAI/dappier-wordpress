@@ -11,7 +11,7 @@ add_action( 'init', 'dappier_askai_block_init' );
  *
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
  *
- * @since TBD
+ * @since 0.9.0
  *
  * @return void
  */
@@ -49,18 +49,31 @@ function dappier_render_askai_block( $attributes, $content, $block ) {
 			return '';
 		}
 
+		// If in editor, show placeholder.
+		if ( $editor ) {
+			$svg = file_get_contents( DAPPIER_PLUGIN_DIR . 'src/img/dappier-logo.svg' );
+			return sprintf(
+				'<div class="dappier-askai-block-placeholder">
+					<div class="dappier-askai-block-placeholder__logo">%s</div>
+					<p class="dappier-askai-block-placeholder__title">%s</p>
+					<p class="dappier-askai-block-placeholder__description">%s</p>
+				</div>',
+				$svg,
+				__( 'AskAI Block', 'dappier' ),
+				__( 'Displays an interactive chat interface on your site.', 'dappier' )
+			);
+		}
+
 		// Filter out empty string attributes.
 		$attributes = array_filter( $attributes, function( $value ) {
 			return '' !== $value;
 		} );
 
-		// Check if we're in the block editor.
-		$editor = defined('REST_REQUEST') && true === REST_REQUEST && 'edit' === filter_input( INPUT_GET, 'context', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
-		// Force the initial search query to the home URL when in the block editor.
-		if ( $editor && ! ( isset( $attributes['initialSearchQuery'] ) && $attributes['initialSearchQuery'] ) ) {
-			$attributes['initialSearchQuery'] = home_url();
-		}
+		// // Force the initial search query to the home URL when in the block editor.
+		// if ( $editor && ! ( isset( $attributes['initialSearchQuery'] ) && $attributes['initialSearchQuery'] ) ) {
+		// 	$attributes['initialSearchQuery'] = home_url();
+		// }
 
 		// Force transparent when no color is set.
 		if ( ! isset( $attributes['mainBackgroundColor'] ) || empty( $attributes['mainBackgroundColor'] ) ) {

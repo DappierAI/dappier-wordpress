@@ -7,7 +7,6 @@
 	"category": "widgets",
 	"description": "Add a Dappier AskAI widget to your content.",
 	"keywords": ["ai", "chat", "ask"],
-	"example": {},
 	"supports": {
 		"html": false,
 		"customClassName": false
@@ -58,6 +57,7 @@
 			"default": false
 		}
 	},
+	"example": {},
 	"textdomain": "dappier-wordpress",
 	"editorScript": [ "dappier-loader", "file:../build/block/block.js" ],
 	"editorStyle": "file:../build/block/editor.css",
