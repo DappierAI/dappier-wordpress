@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) || die;
 /**
  * Register a shortcode.
  *
- * @since TBD
+ * @since 0.9.0
  *
  * @return string
  */

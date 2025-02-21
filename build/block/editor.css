@@ -1,6 +1,47 @@
 /*!**********************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./block/editor.css ***!
   \**********************************************************************************************************************************************************************/
+
+/* block. */
+
+.wp-block-dappier-askai {
+	margin-block: 0;
+}
+
+/* block placeholder. */
+
+.dappier-askai-block-placeholder {
+	padding: 36px;
+	text-align: center;
+	background-color: rgba(131, 83, 226, .05);
+	border: 2px dashed rgba(131, 83, 226, .25);
+	border-radius: 4px;
+}
+
+.dappier-askai-block-placeholder__logo {
+	max-width: 180px;
+	margin: 0 auto 16px;
+
+	svg {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+}
+
+.dappier-askai-block-placeholder__title {
+	font-size: 1.1em;
+	font-weight: 600;
+}
+
+.dappier-askai-block-placeholder__description {
+	margin: 0;
+	font-size: .9em;
+	opacity: 0.75;
+}
+
+/* block settings. */
+
 .dappier-inspector-tabs .components-tab-panel__tabs {
 	display: flex;
 }
