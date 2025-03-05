@@ -17,8 +17,6 @@ function dappier_get_allowed_post_types() {
 	$post_types = apply_filters( 'dappier_allowed_post_types', $post_types );
 	$post_types = array_map( 'sanitize_key', $post_types );
 
-	ray( $post_types );
-
 	return $post_types;
 }
 
