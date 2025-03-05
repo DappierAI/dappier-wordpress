@@ -49,31 +49,10 @@ function dappier_render_askai_block( $attributes, $content, $block ) {
 			return '';
 		}
 
-		// If in editor, show placeholder.
-		if ( $editor ) {
-			$svg = file_get_contents( DAPPIER_PLUGIN_DIR . 'src/img/dappier-logo.svg' );
-			return sprintf(
-				'<div class="dappier-askai-block-placeholder">
-					<div class="dappier-askai-block-placeholder__logo">%s</div>
-					<p class="dappier-askai-block-placeholder__title">%s</p>
-					<p class="dappier-askai-block-placeholder__description">%s</p>
-				</div>',
-				$svg,
-				__( 'AskAI Block', 'dappier' ),
-				__( 'Displays an interactive chat interface on your site.', 'dappier' )
-			);
-		}
-
 		// Filter out empty string attributes.
 		$attributes = array_filter( $attributes, function( $value ) {
 			return '' !== $value;
 		} );
-
-
-		// // Force the initial search query to the home URL when in the block editor.
-		// if ( $editor && ! ( isset( $attributes['initialSearchQuery'] ) && $attributes['initialSearchQuery'] ) ) {
-		// 	$attributes['initialSearchQuery'] = home_url();
-		// }
 
 		// Force transparent when no color is set.
 		if ( ! isset( $attributes['mainBackgroundColor'] ) || empty( $attributes['mainBackgroundColor'] ) ) {
@@ -84,9 +63,19 @@ function dappier_render_askai_block( $attributes, $content, $block ) {
 		$attributes['mainLogoUrl'] = '';
 		$attributes['enableTitle'] = false;
 
+		// If in the editor, use dummy mode.
+		if ( $editor ) {
+			$attributes['mode'] = 'dummy';
+		}
+
 		// Instantiate the AskAI class with block attributes.
 		$askai = new Dappier_AskAi( $attributes );
-		$askai->set_location( 'block' );
+
+		if ( $editor ) {
+ 			$askai->set_location( 'editor' );
+		} else {
+			$askai->set_location( 'block' );
+		}
 
 		// Get the rendered HTML.
 		$html = $askai->render();
