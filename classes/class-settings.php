@@ -977,6 +977,7 @@ class Dappier_Settings {
 									// Update API Key.
 									echo '<ul>';
 										printf( '<li><a href="%s">> %s</a></li>', esc_url( $update_url ), __( 'Update API Key', 'dappier' ) );
+										printf( '<li><a href="https://platform.dappier.com/subscription-plan">> %s</a></li>', __( 'Upgrade my Account', 'dappier' ) );
 									echo '</ul>';
 								echo '</div>';
 							echo '</div>';
@@ -1162,7 +1163,7 @@ class Dappier_Settings {
 		}
 
 		// Unset for now.
-		unset( $details['queries'] );
+		// unset( $details['queries'] );
 		unset( $details['queries_used_month'] );
 		unset( $details['total_queries_allowed'] );
 		unset( $details['rev_share_in_percent'] );
@@ -1173,14 +1174,14 @@ class Dappier_Settings {
 			'account_id'            => [ 'label' => __( 'Account ID', 'dappier' ), 'sanitize' => 'sanitize_key' ],
 			'widget_id'             => [ 'label' => __( 'AskAI ID', 'dappier' ), 'sanitize' => 'sanitize_key' ],
 			'email'                 => [ 'label' => __( 'Email', 'dappier' ), 'sanitize' => 'sanitize_email' ],
-			'name'                  => [ 'label' => __( 'Subscription', 'dappier' ), 'sanitize' => 'sanitize_text_field' ], // TODO: Should this be "Type" or something?
-			// 'subscription_level'    => [ 'label' => __( 'Subscription', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
+			'name'                  => [ 'label' => __( 'Plan', 'dappier' ), 'sanitize' => 'sanitize_text_field' ], // TODO: Should this be "Type" or something?
+			'subscription_level'    => [ 'label' => __( 'Subscription', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
 			'created_at'            => [ 'label' => __( 'Created at', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
 			'ai_agents'             => [ 'label' => __( 'AI Agents', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
 			'ai_agents_used'        => [ 'label' => __( 'AI Agents', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
 			'ai_agents_allowed'     => [ 'label' => __( 'AI Agents', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
-			'queries'               => [ 'label' => __( 'Queries this Month', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
-			'queries_used_month'    => [ 'label' => __( 'Queries this Month', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
+			'queries'               => [ 'label' => __( 'Queries', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
+			'queries_used_month'    => [ 'label' => __( 'Queries', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
 			'total_queries_allowed' => [ 'label' => __( 'Total Queries Allowed', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
 			'rev_share_in_percent'  => [ 'label' => __( 'Revenue Share', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
 		];
@@ -1204,6 +1205,10 @@ class Dappier_Settings {
 				break;
 				case 'rev_share_in_percent':
 					$details[ $data['label'] ] .= '%';
+				break;
+				case 'ai_agents':
+				case 'queries':
+					$details[ $data['label'] ] .= sprintf( ' <a class="dappier-status dappier-status__warning" href="https://platform.dappier.com/subscription-plan" target="_blank" rel="noopener noreferrer">%s</a>', __( 'Upgrade', 'dappier' ) );
 				break;
 			}
 

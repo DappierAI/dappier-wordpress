@@ -186,6 +186,7 @@
 }
 
 .dappier-status {
+	display: inline-flex;
 	padding: 2px 8px;
 	font-size: .75em;
 	text-transform: uppercase;
@@ -199,7 +200,8 @@
 
 .dappier-status__no_agent,
 .dappier-status__not_started,
-.dappier-status__running {
+.dappier-status__running,
+.dappier-status__warning {
 	background-color: var(--color-warning);
 	color: rgba(0, 0, 0, 0.6);
 }
