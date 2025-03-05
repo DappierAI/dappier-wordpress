@@ -112,9 +112,9 @@ class Dappier_Endpoints {
 	 */
 	function handle_posts_request( $request ) {
 		// Get pagination parameters from the request.
-		$post_types = $request->get_param( 'post_type' ) ? sanitize_text_field( $request->get_param( 'post_type' ) ) : 'post';
-		$post_types = array_map( 'sanitize_key', explode( ',', $post_types ) );
-		$post_types = array_intersect( $post_types, dappier_get_allowed_post_types() );
+		$post_types = $request->get_param( 'post_type' ) ? sanitize_text_field( $request->get_param( 'post_type' ) ) : null;
+		$post_types = $post_types ? array_map( 'sanitize_key', explode( ',', $post_types ) ) : null;
+		$post_types = $post_types ? $post_types : dappier_get_allowed_post_types();
 		$per_page   = $request->get_param( 'per_page' ) ? absint( $request->get_param( 'per_page' ) ) : 20;
 		$page       = $request->get_param( 'page' ) ? absint( $request->get_param( 'page' ) ) : 1;
 

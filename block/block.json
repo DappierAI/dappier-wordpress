@@ -5,7 +5,7 @@
 	"version": "0.1.0",
 	"title": "Dappier AskAI",
 	"category": "widgets",
-	"description": "Add a Dappier AskAI widget to your content.",
+	"description": "Add a Dappier AskAI module to your content.",
 	"keywords": ["ai", "chat", "ask"],
 	"supports": {
 		"html": false,
