@@ -72,8 +72,8 @@ class Dappier_Settings {
 
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_script( 'wp-color-picker' );
-		wp_enqueue_style( 'dappier-settings', dappier_get_file_url( 'dappier-settings', 'css' ), [], DAPPIER_PLUGIN_VERSION );
-		wp_enqueue_script( 'dappier-settings', dappier_get_file_url( 'dappier-settings', 'js' ), [ 'jquery', 'wp-color-picker' ], DAPPIER_PLUGIN_VERSION, true );
+		wp_enqueue_style( 'dappier-settings', DAPPIER_PLUGIN_URL . '/build/css/dappier-settings.css', [], DAPPIER_PLUGIN_VERSION );
+		wp_enqueue_script( 'dappier-settings', DAPPIER_PLUGIN_URL . '/build/js/dappier-settings.js', [ 'jquery', 'wp-color-picker' ], DAPPIER_PLUGIN_VERSION, true );
 		wp_localize_script( 'dappier-settings', 'dappierSettings', [
 			'ajaxUrl'       => admin_url( 'admin-ajax.php' ),
 			'uploaderTitle' => __( 'Insert image', 'dappier' ),
