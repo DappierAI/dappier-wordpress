@@ -3,7 +3,6 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-
 /**
  * Get the allowed post types for the endpoint and content ingestion.
  *
@@ -14,8 +13,11 @@ defined( 'ABSPATH' ) || die;
  * @return array
  */
 function dappier_get_allowed_post_types() {
-	$post_types = apply_filters( 'dappier_allowed_post_types', [ 'post' ] );
+	$post_types = (array) dappier_get_option( 'post_types' );
+	$post_types = apply_filters( 'dappier_allowed_post_types', $post_types );
 	$post_types = array_map( 'sanitize_key', $post_types );
+
+	ray( $post_types );
 
 	return $post_types;
 }

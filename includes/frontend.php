@@ -17,7 +17,7 @@ function dappier_register_scripts() {
 		return;
 	}
 
-	wp_register_script( 'dappier-loader', 'https://assets.dappier.com/widget/dappier-loader.min.js', [], null, ['in_footer' => false] );
+	wp_register_script( 'dappier-loader', 'https://assets.dappier.com/widget/dappier-loader.min.js', [], null, [ 'in_footer' => false ] );
 }
 
 add_action( 'wp_enqueue_scripts', 'dappier_enqueue_scripts' );

@@ -250,7 +250,7 @@
 		max-width: 8ch;
 	}
 
-	input:not([type="number"]):not([type="submit"]):not(.button),
+	input:not([type="checkbox"]):not([type="number"]):not([type="submit"]):not(.button),
 	select,
 	textarea {
 		display: block;
@@ -320,6 +320,28 @@
 
 	summary {
 		margin-bottom: 12px;
+	}
+}
+
+.dappier-step__checkboxes {
+	display: inline-flex;
+	flex-direction: column;
+	gap: .5em;
+}
+
+.dappier-checkbox {
+	display: flex;
+	gap: .5em;
+	align-items: center;
+	cursor: pointer;
+
+	input,
+	span {
+		line-height: 1.5;
+	}
+
+	input {
+		margin: 0;
 	}
 }
 

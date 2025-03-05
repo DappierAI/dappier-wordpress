@@ -171,6 +171,15 @@ class Dappier_Settings {
 			'dappier_three_advanced' // section
 		);
 
+		// AskAI Post Types.
+		add_settings_field(
+			'post_types', // id
+			'', // title
+			[ $this, 'post_types_callback' ], // callback
+			'dappier', // page
+			'dappier_three_after' // section
+		);
+
 		// AskAI Location.
 		add_settings_field(
 			'askai_location', // id
@@ -271,22 +280,23 @@ class Dappier_Settings {
 	 */
 	function sanitize( $input ) {
 		$allowed = [
-			'api_key'            => 'sanitize_text_field',
-			'aimodel_id'         => 'sanitize_text_field',
-			'datamodel_id'       => 'sanitize_text_field',
-			'external_dm_id'     => 'sanitize_text_field',
-			'widget_id'          => 'sanitize_text_field',
-			'agent_name'         => 'sanitize_text_field',
-			'agent_desc'         => 'sanitize_textarea_field',
-			'agent_persona'      => 'sanitize_textarea_field',
-			'askai_location'    => 'sanitize_text_field',
-			'askai_bg_color'    => 'sanitize_text_field',
-			'askai_fg_color'    => 'sanitize_text_field',
-			'askai_theme_color' => 'sanitize_text_field',
-			'askai_branding'    => 'sanitize_text_field',
+			'api_key'           => [ $this, 'sanitize_text_field' ],
+			'aimodel_id'        => [ $this, 'sanitize_text_field' ],
+			'datamodel_id'      => [ $this, 'sanitize_text_field' ],
+			'external_dm_id'    => [ $this, 'sanitize_text_field' ],
+			'widget_id'         => [ $this, 'sanitize_text_field' ],
+			'agent_name'        => [ $this, 'sanitize_text_field' ],
+			'agent_desc'        => 'sanitize_textarea_field',
+			'agent_persona'     => 'sanitize_textarea_field',
+			'post_types'        => [ $this, 'sanitize_text_field' ],
+			'askai_location'    => [ $this, 'sanitize_text_field' ],
+			'askai_bg_color'    => [ $this, 'sanitize_text_field' ],
+			'askai_fg_color'    => [ $this, 'sanitize_text_field' ],
+			'askai_theme_color' => [ $this, 'sanitize_text_field' ],
+			'askai_branding'    => [ $this, 'sanitize_text_field' ],
 			'askai_logo'        => 'absint',
 			'askai_logo_width'  => 'absint',
-			'askai_title'       => 'sanitize_text_field',
+			'askai_title'       => [ $this, 'sanitize_text_field' ],
 			'askai_icon'        => 'absint',
 			'askai_icon_width'  => 'absint',
 		];
@@ -310,6 +320,17 @@ class Dappier_Settings {
 		}
 
 		return $input;
+	}
+
+	/**
+	 * Sanitize text field.
+	 *
+	 * @param array $input
+	 *
+	 * @return array
+	 */
+	function sanitize_text_field( $input ) {
+		return is_array( $input ) ? array_map( 'sanitize_text_field', $input ) : sanitize_text_field( $input );
 	}
 
 	/**
@@ -466,6 +487,47 @@ class Dappier_Settings {
 				__( 'Use the available content sources and respond in a friendly manner.', 'dappier' ),
 				$value
 			);
+		echo '</div>';
+	}
+
+	/**
+	 * Setting callback.
+	 *
+	 * @since TBD
+	 *
+	 * @return void
+	 */
+	function post_types_callback() {
+		$values = dappier_get_option( 'post_types' );
+		$values = is_array( $values ) ? $values : [ 'post' ];
+
+		echo '<div class="dappier-step__field">';
+			printf( '<label class="dappier-step__label">%s</label>', __( 'Content Types', 'dappier' ) );
+					printf(
+				'<p class="dappier-step__desc">%s</p>',
+				__( 'Choose what types of content your AskAI agent should learn from. For example, select "Posts" to let it answer questions about your blog posts, or "Pages" for your main website content.', 'dappier' )
+			);
+
+			echo '<div class="dappier-step__checkboxes">';
+				$post_types = get_post_types( [ 'exclude_from_search' => false ], 'objects' );
+
+				foreach ( $post_types as $post_type ) {
+					// Skip if it doesn't support content.
+					if ( ! post_type_supports( $post_type->name, 'editor' ) ) {
+						continue;
+					}
+
+					printf(
+						'<label class="dappier-checkbox">
+							<input type="checkbox" name="dappier[post_types][]" value="%s"%s>
+							<span class="dappier-checkbox__label">%s</span>
+						</label>',
+						$post_type->name,
+						in_array( $post_type->name, $values ) ? ' checked' : '',
+						$post_type->label
+					);
+				}
+			echo '</div>';
 		echo '</div>';
 	}
 
@@ -830,6 +892,7 @@ class Dappier_Settings {
 									do_settings_fields( 'dappier', 'dappier_three_advanced' );
 								echo '</details>';
 							echo '</div>';
+							do_settings_fields( 'dappier', 'dappier_three_after');
 							echo '<div class="dappier-step__content">';
 								$button_text = $aimodel_id ? __( 'Update Agent', 'dappier' ) : __( 'Save Agent', 'dappier' );
 								submit_button( $button_text, 'primary', 'submit_three' );
