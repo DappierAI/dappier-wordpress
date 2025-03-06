@@ -76,6 +76,7 @@ class Dappier_Settings {
 		wp_enqueue_script( 'dappier-settings', DAPPIER_PLUGIN_URL . '/build/js/dappier-settings.js', [ 'jquery', 'wp-color-picker' ], DAPPIER_PLUGIN_VERSION, true );
 		wp_localize_script( 'dappier-settings', 'dappierSettings', [
 			'ajaxUrl'       => admin_url( 'admin-ajax.php' ),
+			'loadingText'   => __( 'Saving...', 'dappier' ),
 			'uploaderTitle' => __( 'Insert image', 'dappier' ),
 			'buttonText'    => __( 'Use this image', 'dappier' ),
 		] );

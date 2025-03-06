@@ -148,6 +148,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     element.style.maxWidth = value + 'px';
   }
+
+  // Handle submit button loading state.
+  document.querySelectorAll('.dappier-form input[type="submit"]').forEach(button => {
+    button.addEventListener('click', function () {
+      this.value = dappierSettings.loadingText;
+    });
+  });
 });
 jQuery(function ($) {
   // On upload button click.
