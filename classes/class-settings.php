@@ -569,6 +569,7 @@ class Dappier_Settings {
 	 */
 	function askai_bg_color_callback() {
 		$value = dappier_get_option( 'askai_bg_color' );
+		$value = ! is_null( $value ) ? $value : '#f2f2f2';
 
 		echo '<div class="dappier-step__field">';
 			printf( '<label class="dappier-step__label" for="dappier[askai_bg_color]">%s</label>', __( 'AskAI Background Color', 'dappier' ) );
@@ -586,6 +587,7 @@ class Dappier_Settings {
 	 */
 	function askai_fg_color_callback() {
 		$value = dappier_get_option( 'askai_fg_color' );
+		$value = ! is_null( $value ) ? $value : '#000000';
 
 		echo '<div class="dappier-step__field">';
 			printf( '<label class="dappier-step__label" for="dappier[askai_fg_color]">%s</label>', __( 'AskAI Text Color', 'dappier' ) );
@@ -603,6 +605,7 @@ class Dappier_Settings {
 	 */
 	function askai_theme_color_callback() {
 		$value = dappier_get_option( 'askai_theme_color' );
+		$value = ! is_null( $value ) ? $value : '#674AD9';
 
 		echo '<div class="dappier-step__field">';
 			printf( '<label class="dappier-step__label" for="dappier[askai_theme_color]">%s</label>', __( 'AskAI Theme Color', 'dappier' ) );
@@ -1114,8 +1117,8 @@ class Dappier_Settings {
 		// Check for transient.
 		if ( false === ( $details = get_transient( $transient ) ) ) {
 			// Set up the API url and body.
-			$url        = "https://api.dappier.com/v1/integrations/account?aimodelid={$aimodel_id}";
-			$args       = [
+			$url  = "https://api.dappier.com/v1/integrations/account?aimodelid={$aimodel_id}";
+			$args = [
 				'headers' => [
 					'Authorization' => 'Bearer ' . $api_key,
 				],
@@ -1163,19 +1166,18 @@ class Dappier_Settings {
 		}
 
 		// Unset for now.
-		// unset( $details['queries'] );
+		unset( $details['name'] );
 		unset( $details['queries_used_month'] );
 		unset( $details['total_queries_allowed'] );
 		unset( $details['rev_share_in_percent'] );
-		unset( $details['subscription_level'] );
 
 		// Map the details.
 		$map = [
 			'account_id'            => [ 'label' => __( 'Account ID', 'dappier' ), 'sanitize' => 'sanitize_key' ],
 			'widget_id'             => [ 'label' => __( 'AskAI ID', 'dappier' ), 'sanitize' => 'sanitize_key' ],
 			'email'                 => [ 'label' => __( 'Email', 'dappier' ), 'sanitize' => 'sanitize_email' ],
-			'name'                  => [ 'label' => __( 'Plan', 'dappier' ), 'sanitize' => 'sanitize_text_field' ], // TODO: Should this be "Type" or something?
-			'subscription_level'    => [ 'label' => __( 'Subscription', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
+			'name'                  => [ 'label' => __( 'Name', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
+			'subscription_level'    => [ 'label' => __( 'Plan', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
 			'created_at'            => [ 'label' => __( 'Created at', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
 			'ai_agents'             => [ 'label' => __( 'AI Agents', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
 			'ai_agents_used'        => [ 'label' => __( 'AI Agents', 'dappier' ), 'sanitize' => 'sanitize_text_field' ],
