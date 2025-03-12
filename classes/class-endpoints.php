@@ -63,6 +63,8 @@ class Dappier_Endpoints {
 	 *
 	 * This method returns the site title and description.
 	 *
+	 * Currently unused.
+	 *
 	 * @example GET /wp-json/dappier/v1/app
 	 *
 	 * @since 0.1.0
@@ -124,6 +126,9 @@ class Dappier_Endpoints {
 			'posts_per_page' => $per_page,
 			'paged'          => $page,
 		];
+
+		// Add filters to the query.
+		$args = apply_filters( 'dappier_api_query_args', $args );
 
 		// Query the posts.
 		$query = new WP_Query( $args );
