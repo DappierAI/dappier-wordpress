@@ -22,12 +22,12 @@ class Dappier_Settings {
 	 * @return void
 	 */
 	function hooks() {
-		add_action( 'admin_menu',                              [ $this, 'add_menu_item' ], 12 );
-		add_action( 'admin_enqueue_scripts',                   [ $this, 'enqueue_script' ] );
-		add_action( 'admin_init',                              [ $this, 'init' ] );
-		add_filter( 'pre_update_option_dappier',               [ $this, 'before_update_settings' ], 10, 3 );
-		add_action( 'update_option_dappier',                   [ $this, 'after_update_settings' ], 10, 2 );
-		add_filter( 'plugin_action_links_dappier/dappier.php', [ $this, 'add_plugin_links' ], 10, 4 );
+		add_action( 'admin_menu',                [ $this, 'add_menu_item' ], 12 );
+		add_action( 'admin_enqueue_scripts',     [ $this, 'enqueue_script' ] );
+		add_action( 'admin_init',                [ $this, 'init' ] );
+		add_filter( 'pre_update_option_dappier', [ $this, 'before_update_settings' ], 10, 3 );
+		add_action( 'update_option_dappier',     [ $this, 'after_update_settings' ], 10, 2 );
+		add_filter( 'plugin_action_links_dappier-wordpress/dappier-wordpress.php', [ $this, 'add_plugin_links' ], 10, 4 );
 	}
 
 	/**
@@ -1652,9 +1652,11 @@ class Dappier_Settings {
 	 * @return array associative array of plugin action links.
 	 */
 	function add_plugin_links( $actions, $plugin_file, $plugin_data, $context ) {
-		$settings = sprintf( '<a href="%s">%s</a>', esc_url( admin_url( 'admin.php?page=dappier' ) ), __( 'Settings', 'dappier' ) );
-		$actions  = [ 'settings' => $settings ] + $actions;
+		$links = [
+			'settings' => sprintf( '<a href="%s">%s</a>', esc_url( admin_url( 'admin.php?page=dappier' ) ), __( 'Settings', 'dappier' ) ),
+			'docs'     => sprintf( '<a href="%s">%s</a>', esc_url( 'https://docs.dappier.com/wordpress' ), __( 'Docs', 'dappier' ) ),
+		];
 
-		return $actions;
+		return array_merge( $links, $actions );
 	}
 }
