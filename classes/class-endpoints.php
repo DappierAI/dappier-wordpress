@@ -169,6 +169,8 @@ class Dappier_Endpoints {
 			wp_reset_postdata();
 		}
 
+		// $data = apply_filters( 'dappier_api_posts_data', $data, $query, $request );
+
 		// Prepare the paginated response.
 		$response = [
 			'site'         => get_bloginfo( 'name' ),
