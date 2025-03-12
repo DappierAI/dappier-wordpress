@@ -128,7 +128,7 @@ class Dappier_Endpoints {
 		];
 
 		// Add filters to the query.
-		$args = apply_filters( 'dappier_api_query_args', $args );
+		$args = apply_filters( 'dappier_api_query_args', $args, $request );
 
 		// Query the posts.
 		$query = new WP_Query( $args );
