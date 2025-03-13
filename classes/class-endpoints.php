@@ -217,35 +217,34 @@ class Dappier_Endpoints {
 	 * @return void
 	 */
 	function authenticate_request( $request ) {
-		// Get the headers
-		$headers = $request->get_headers();
+		// Get the authorization header.
+		$auth_header = $request->get_header('Authorization');
 
-		// Bail if no headers.
-		if ( ! isset( $headers['authorization'] ) ) {
-			// If authorization header is missing
+		// Bail if no authorization header.
+		if ( ! $auth_header ) {
 			return new WP_Error( 'rest_forbidden', 'Authorization header missing.', [ 'status' => 403 ] );
 		}
 
-		// Extract the Bearer token from the Authorization header.
-		$auth_header = $headers['authorization'];
-		list( $type, $token ) = explode( ' ', reset( $auth_header ), 2 );
+		// Extract the Bearer token.
+		list( $type, $token ) = explode( ' ', $auth_header, 2 );
 
 		// Bearer token should start with 'Bearer'.
 		if ( 'Bearer' !== $type ) {
 			return new WP_Error( 'rest_forbidden', 'Invalid authentication method. Use Bearer token.', [ 'status' => 403 ] );
 		}
 
-		// Get Data Model ID key.
-		$datamodel_id = dappier_get_option( 'datamodel_id' );
+		// Get the base API key.
+		$api_keys = array_filter( (array) dappier_get_option( 'datamodel_id' ) );
 
-		// Bail if no API key.
-		if ( ! $datamodel_id ) {
-			return new WP_Error( 'rest_forbidden', 'Data Model API key is missing.', [ 'status' => 403 ] );
-		}
+		// Allow filtering for multiple tokens
+		$api_keys = apply_filters( 'dappier_api_keys', $api_keys );
 
-		// Bail if token does not match the API key.
-		if ( $token !== $datamodel_id ) {
-			return new WP_Error( 'rest_forbidden', 'Token Mismatch.', [ 'status' => 403 ] );
+		// Sanitize all keys after filtering
+		$api_keys = array_map( 'sanitize_text_field', $api_keys );
+
+		// Bail if no API keys or token does not match.
+		if ( ! $api_keys || ! in_array( $token, $api_keys, true ) ) {
+			return new WP_Error( 'rest_forbidden', 'Invalid API key.', [ 'status' => 403 ] );
 		}
 
 		return true;
