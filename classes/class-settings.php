@@ -1512,7 +1512,7 @@ class Dappier_Settings {
 					'name'        => $name,
 					'description' => $desc,
 					'persona'     => $persona,
-					'feed_url'    => $feed_url,
+					'feed_url'    => $feed_url ?: home_url( '/wp-json/dappier/v1/posts' ),
 					'type'        => 'wordpress', // Required to update an agent.
 				];
 
