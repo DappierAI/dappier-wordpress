@@ -227,7 +227,7 @@ class Dappier_Endpoints {
 		}
 
 		// Extract the Bearer token from the Authorization header.
-		list( $type, $token ) = explode( ' ', reset( $auth_header ), 2 );
+		list( $type, $token ) = explode( ' ', $auth_header, 2 );
 
 		// Bearer token should start with 'Bearer'.
 		if ( 'Bearer' !== $type ) {
