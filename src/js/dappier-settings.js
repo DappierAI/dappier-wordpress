@@ -36,11 +36,11 @@ document.addEventListener( 'DOMContentLoaded', function() {
 				agentFieldsHidden = false;
 			}
 
-			// If creating a new agent, clear the fields.
+			// If creating a new agent, set the default values.
 			if ( '_create_agent' === e.target.value ) {
-				agentNameInput.value    = '';
-				agentDescInput.value    = '';
-				agentPersonaInput.value = '';
+				agentNameInput.value    = agentNameInput.placeholder;
+				agentDescInput.value    = agentDescInput.placeholder;
+				agentPersonaInput.value = agentPersonaInput.placeholder;
 			}
 			// Selecting an existing, get the agent data.
 			else {

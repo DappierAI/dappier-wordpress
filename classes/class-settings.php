@@ -145,6 +145,15 @@ class Dappier_Settings {
 			'dappier_three_advanced' // section
 		);
 
+		// Agent Feed URL.
+		add_settings_field(
+			'feed_url', // id
+			'', // title
+			[ $this, 'feed_url_callback' ], // callback
+			'dappier', // page
+			'dappier_three_advanced' // section
+		);
+
 		// Agent Name.
 		add_settings_field(
 			'agent_name', // id
@@ -289,6 +298,7 @@ class Dappier_Settings {
 			'agent_name'        => [ $this, 'sanitize_text_field' ],
 			'agent_desc'        => 'sanitize_textarea_field',
 			'agent_persona'     => 'sanitize_textarea_field',
+			'feed_url'          => 'sanitize_url',
 			'post_types'        => [ $this, 'sanitize_text_field' ],
 			'askai_location'    => [ $this, 'sanitize_text_field' ],
 			'askai_bg_color'    => [ $this, 'sanitize_text_field' ],
@@ -374,13 +384,17 @@ class Dappier_Settings {
 
 						// Add existing agents.
 						foreach ( $agents as $agent ) {
-							// SKip if id and name are not set.
+							// Skip if id and name are not set.
 							if ( ! isset( $agent['id'], $agent['name'] ) ) {
 								continue;
 							}
 
-							$selected = $aimodel_id === $agent['id'] ? ' selected' : '';
-							printf( '<option value="%s"%s>%s</option>', $agent['id'], $selected, $agent['name'] );
+							// Add the agent.
+							printf( '<option value="%s" %s>%s</option>',
+								esc_attr( $agent['id'] ),
+								selected( $aimodel_id, $agent['id'], false ),
+								esc_html( $agent['name'] )
+							);
 						}
 					}
 
@@ -401,8 +415,20 @@ class Dappier_Settings {
 	 */
 	function datamodel_id_callback() {
 		$datamodel_id = dappier_get_option( 'datamodel_id' );
+		$selected     = $this->get_agent_value( 'datamodel_id' );
 
-		printf( '<input type="hidden" name="dappier[datamodel_id]" id="datamodel_id" value="%s">', esc_attr( $datamodel_id ) );
+		// If we have a selected external dm id.
+		if ( $selected ) {
+			if ( ! $datamodel_id || $datamodel_id !== $selected ) {
+				// Update the external dm id.
+				dappier_update_option( 'datamodel_id', $selected );
+
+				// Set the value.
+				$datamodel_id = $selected;
+			}
+		}
+
+		printf( '<input type="text" name="dappier[datamodel_id]" id="datamodel_id" value="%s">', esc_attr( $datamodel_id ) );
 	}
 
 	/**
@@ -414,8 +440,20 @@ class Dappier_Settings {
 	 */
 	function external_dm_id_callback() {
 		$external_dm_id = dappier_get_option( 'external_dm_id' );
+		$selected     = $this->get_agent_value( 'external_dm_id' );
 
-		printf( '<input type="hidden" name="dappier[external_dm_id]" id="external_dm_id" value="%s">', esc_attr( $external_dm_id ) );
+		// If we have a selected external dm id.
+		if ( $selected ) {
+			if ( ! $external_dm_id || $external_dm_id !== $selected ) {
+				// Update the external dm id.
+				dappier_update_option( 'feed_url', $selected );
+
+				// Set the value.
+				$external_dm_id = $selected;
+			}
+		}
+
+		printf( '<input type="text" name="dappier[external_dm_id]" id="external_dm_id" value="%s">', esc_attr( $external_dm_id ) );
 	}
 
 	/**
@@ -427,8 +465,20 @@ class Dappier_Settings {
 	 */
 	function widget_id_callback() {
 		$widget_id = dappier_get_option( 'widget_id' );
+		$selected  = $this->get_agent_value( 'widget_id' );
 
-		printf( '<input type="hidden" name="dappier[widget_id]" id="widget_id" value="%s">', esc_attr( $widget_id ) );
+		// If we have a selected widget id.
+		if ( $selected ) {
+			if ( ! $widget_id || $widget_id !== $selected ) {
+				// Update the widget id.
+				dappier_update_option( 'feed_url', $selected );
+
+				// Set the value.
+				$widget_id = $selected;
+			}
+		}
+
+		printf( '<input type="text" name="dappier[widget_id]" id="widget_id" value="%s">', esc_attr( $widget_id ) );
 	}
 
 	/**
@@ -438,9 +488,54 @@ class Dappier_Settings {
 	 *
 	 * @return void
 	 */
+	function feed_url_callback() {
+		$feed_url = dappier_get_option( 'feed_url' );
+		$selected = $this->get_agent_value( 'feed_url' );
+
+		// If we have a selected feed url.
+		if ( $selected ) {
+			if ( ! $feed_url || $feed_url !== $selected ) {
+				// Update the feed url.
+				dappier_update_option( 'feed_url', $selected );
+
+				// Set the value.
+				$feed_url = $selected;
+			}
+		}
+
+		// No selected feed url and no value.
+		elseif ( ! $feed_url ) {
+			// Set the value.
+			$feed_url = home_url( '/wp-json/dappier/v1/posts' );
+		}
+
+		printf( '<input type="text" name="dappier[feed_url]" id="feed_url" value="%s">', esc_attr( $feed_url ) );
+	}
+
+
+	/**
+	 * Setting callback.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return void
+	 */
 	function agent_name_callback() {
-		$value = dappier_get_option( 'agent_name' );
-		$value = ! $this->get_agents() ? get_bloginfo( 'name' ) : $value;
+		$value    = dappier_get_option( 'agent_name' );
+		$selected = $this->get_agent_value( 'name' );
+
+		// If we have a selected agent name.
+		if ( $selected ) {
+			if ( ! $value || $value !== $selected ) {
+				// Update the agent name.
+				dappier_update_option( 'agent_name', $selected );
+			}
+		}
+		// No selected agent name and no value.
+		elseif ( ! $value ) {
+			// Set the value.
+			$value = get_bloginfo( 'name' );
+		}
 
 		echo '<div class="dappier-step__inside agent_name">';
 			printf( '<label class="dappier-step__label" for="dappier[agent_name]">%s</label>', __( 'Name (required)', 'dappier' ) );
@@ -460,13 +555,29 @@ class Dappier_Settings {
 	 * @return void
 	 */
 	function agent_desc_callback() {
-		$value = dappier_get_option( 'agent_desc' );
-		$value = $this->get_agents() ? $value : sprintf( __( 'You are a knowledgeable and helpful guide, providing insights and answers about the latest news, trends, and topics relevant to %s.', 'dappier' ), home_url() );
+		$value    = dappier_get_option( 'agent_desc' );
+		$selected = $this->get_agent_value( 'description' );
+
+		// If we have a selected agent description.
+		if ( $selected ) {
+			if ( ! $value || $value !== $selected ) {
+				// Update the agent description.
+				dappier_update_option( 'agent_desc', $selected );
+			}
+		}
+		// No selected agent description and no value.
+		elseif ( ! $value ) {
+			// Set the value.
+			$value = sprintf( __( 'You are a knowledgeable and helpful guide, providing insights and answers about the content, news, trends, and/or topics relevant to %s.', 'dappier' ), home_url() );
+		}
 
 		echo '<div class="dappier-step__inside agent_desc">';
 			printf( '<label class="dappier-step__label" for="dappier[agent_desc]">%s</label>', __( 'Description (required)', 'dappier' ) );
 			printf( '<p class="dappier-step__desc">%s</p>', __( 'Add a short description of what this AI Agent can do.', 'dappier' ) );
-			printf( '<textarea id="agent_desc" class="dappier-step__input" name="dappier[agent_desc]" rows="5" placeholder="">%s</textarea>', $value );
+			printf( '<textarea id="agent_desc" class="dappier-step__input" name="dappier[agent_desc]" rows="5" placeholder="%s">%s</textarea>',
+				$value,
+				$value
+			);
 		echo '</div>';
 	}
 
@@ -479,7 +590,20 @@ class Dappier_Settings {
 	 */
 	function agent_persona_callback() {
 		$value = dappier_get_option( 'agent_persona' );
-		$value = $this->get_agents() ? $value : sprintf( __( 'Use the available content sources and respond in a friendly, knowledgeable, and helpful manner. Provide valid answers to questions about home improvement, remodeling and decor. Assist users with questions related to %s only, and redirect or politely decline off-topic queries.', 'dappier' ), home_url() );
+		$selected = $this->get_agent_value( 'persona' );
+
+		// If we have a selected agent persona.
+		if ( $selected ) {
+			if ( ! $value || $value !== $selected ) {
+				// Update the agent persona.
+				dappier_update_option( 'agent_persona', $selected );
+			}
+		}
+		// No selected agent persona and no value.
+		elseif ( ! $value ) {
+			// Set the value.
+			$value = sprintf( __( 'Use the available content sources and respond in a friendly, knowledgeable, and helpful manner. Provide valid answers to questions and assist users with questions related to %s only, and redirect or politely decline off-topic queries.', 'dappier' ), home_url() );
+		}
 
 		echo '<div class="dappier-step__inside agent_persona">';
 			printf( '<label class="dappier-step__label" for="dappier[agent_persona]">%s</label>', __( 'Persona (required)', 'dappier' ) );
@@ -489,6 +613,32 @@ class Dappier_Settings {
 				$value
 			);
 		echo '</div>';
+	}
+
+	/**
+	 * Get the agent value.
+	 *
+	 * @since TBD
+	 *
+	 * @param string $key The key to get the value for.
+	 *
+	 * @return string
+	 */
+	function get_agent_value( $key ) {
+		$agent_id = dappier_get_option( 'aimodel_id' );
+		$agents   = $this->get_agents();
+
+		if ( $agent_id && $agents ) {
+			foreach ( $agents as $agent ) {
+				if ( $agent_id !== $agent['id'] ) {
+					continue;
+				}
+
+				return isset( $agent[ $key ] ) ? $agent[ $key ] : null;
+			}
+		}
+
+		return null;
 	}
 
 	/**
@@ -1132,7 +1282,11 @@ class Dappier_Settings {
 
 			// Check for errors.
 			if ( 200 !== $code ) {
-				$message = isset( $response['response']['message'] ) ? $response['response']['message'] : __( 'An error occurred while processing the request.', 'dappier' );
+				if ( is_wp_error( $response ) ) {
+					$message = $response->get_error_message();
+				} else {
+					$message = isset( $response['response']['message'] ) ? $response['response']['message'] : __( 'An error occurred while processing the request.', 'dappier' );
+				}
 				$details = new WP_Error( 'dappier_details_error', $code . ' ' . $message );
 			}
 			// No errors.
@@ -1260,7 +1414,11 @@ class Dappier_Settings {
 			// Check for errors.
 			if ( 200 !== $code ) {
 				// Get message.
-				$message = isset( $response['response']['message'] ) ? $response['response']['message'] : __( 'An error occurred while processing the request.', 'dappier' );
+				if ( is_wp_error( $response ) ) {
+					$message = $response->get_error_message();
+				} else {
+					$message = isset( $response['response']['message'] ) ? $response['response']['message'] : __( 'An error occurred while processing the request.', 'dappier' );
+				}
 
 				// Add a settings error with a unique error code.
 				add_settings_error(
@@ -1273,28 +1431,6 @@ class Dappier_Settings {
 
 			// Set the transient.
 			set_transient( $transient, $body, MINUTE_IN_SECONDS * 5 );
-		}
-
-		// If we have agents.
-		if ( $body ) {
-			// Get domains.
-			$site_host = wp_parse_url( home_url(), PHP_URL_HOST );
-
-			// Loop and unset if not the same domain.
-			foreach ( $body as $index => $agent ) {
-				$feed_url  = isset( $agent['feed_url'] ) ? $agent['feed_url'] : null;
-				$feed_host = $feed_url ? wp_parse_url( $feed_url, PHP_URL_HOST ) : null;
-
-				// Skip if no feed host.
-				if ( ! $feed_host ) {
-					continue;
-				}
-
-				// Unset if not the same.
-				if ( $feed_host !== $site_host ) {
-					unset( $body[ $index ] );
-				}
-			}
 		}
 
 		return $body;
@@ -1341,84 +1477,47 @@ class Dappier_Settings {
 			return $value;
 		}
 
-		// Get the data.
-		$aimodel_id     = isset( $value['aimodel_id'] ) ? $value['aimodel_id'] : '';
-		$datamodel_id   = isset( $value['datamodel_id'] ) ? $value['datamodel_id'] : '';
-		$external_dm_id = isset( $value['external_dm_id'] ) ? $value['external_dm_id'] : '';
-		$name           = isset( $value['agent_name'] ) ? trim( $value['agent_name'] ) : '';
-		$desc           = isset( $value['agent_desc'] ) ? trim( $value['agent_desc'] ) : '';
-		$pers           = isset( $value['agent_persona'] ) ? trim( $value['agent_persona'] ) : '';
+		// Get the new values.
+		$name       = isset( $value['agent_name'] ) ? trim( $value['agent_name'] ) : '';
+		$desc       = isset( $value['agent_desc'] ) ? trim( $value['agent_desc'] ) : '';
+		$persona    = isset( $value['agent_persona'] ) ? trim( $value['agent_persona'] ) : '';
+		$aimodel_id = isset( $value['aimodel_id'] ) ? $value['aimodel_id'] : '';
+		$feed_url   = isset( $value['feed_url'] ) ? trim( $value['feed_url'] ) : '';
 
 		// If we have a model, and it's not creating a new one.
 		if ( $aimodel_id && '_create_agent' !== $aimodel_id ) {
-			$code               = null;
-			$old_datamodel_id   = isset( $old_value['datamodel_id'] ) ? $old_value['datamodel_id'] : '';
-			$new_datamodel_id   = isset( $value['datamodel_id'] ) ? $value['datamodel_id'] : '';
-			$old_external_dm_id = isset( $old_value['external_dm_id'] ) ? $old_value['external_dm_id'] : '';
-			$new_external_dm_id = isset( $value['external_dm_id'] ) ? $value['external_dm_id'] : '';
-			$old_widget_id      = isset( $old_value['widget_id'] ) ? $old_value['widget_id'] : '';
-			$new_widget_id      = isset( $value['widget_id'] ) ? $value['widget_id'] : '';
-			$needs_datamodel_id = ! $new_datamodel_id || $old_datamodel_id !== $new_datamodel_id;
-			$needs_widget_id    = ! $new_widget_id || $old_widget_id !== $new_widget_id;
-			$needs_external_dm_id = ! $new_external_dm_id || $old_external_dm_id !== $new_external_dm_id;
+
 			// Set new agent array.
 			$agent_new = [
-				'name'    => $name,
-				'desc'    => $desc,
-				'persona' => $pers,
+				'name'     => $name,
+				'desc'     => $desc,
+				'persona'  => $persona,
+				'feed_url' => $feed_url,
 			];
 
 			// Set old agent array.
 			$agent_old = [
-				'name'    => isset( $old_value['agent_name'] ) ? trim( $old_value['agent_name'] ) : '',
-				'desc'    => isset( $old_value['agent_desc'] ) ? trim( $old_value['agent_desc'] ) : '',
-				'persona' => isset( $old_value['agent_persona'] ) ? trim( $old_value['agent_persona'] ) : '',
+				'name'     => isset( $old_value['agent_name'] ) ? trim( $old_value['agent_name'] ) : '',
+				'desc'     => isset( $old_value['agent_desc'] ) ? trim( $old_value['agent_desc'] ) : '',
+				'persona'  => isset( $old_value['agent_persona'] ) ? trim( $old_value['agent_persona'] ) : '',
+				'feed_url' => isset( $old_value['feed_url'] ) ? trim( $old_value['feed_url'] ) : '',
 			];
-
-			// Start agent data to merge.
-			$agent_data = [
-				'id'             => $aimodel_id,
-				'datamodel_id'   => $datamodel_id,
-				'external_dm_id' => $external_dm_id,
-				'name'           => $name,
-				'description'    => $desc,
-				'persona'        => $pers,
-			];
-
-			// If we need a data model or widget id.
-			if ( $needs_datamodel_id || $needs_external_dm_id ||$needs_widget_id || $agent_new !== $agent_old ) {
-				// Get agent details.
-				$response = $this->get_agent( $aimodel_id, $api_key );
-				$code     = wp_remote_retrieve_response_code( $response );
-
-				// Check for errors.
-				if ( 200 === $code ) {
-					$body = wp_remote_retrieve_body( $response );
-					$body = json_decode( $body, true );
-
-					if ( $body ) {
-						if ( $needs_datamodel_id && isset( $body['datamodel_id'] ) ) {
-							$value['datamodel_id'] = $body['datamodel_id'];
-						}
-
-						if ( $needs_external_dm_id && isset( $body['external_dm_id'] ) ) {
-							$value['external_dm_id'] = $body['external_dm_id'];
-						}
-
-						if ( $needs_widget_id && isset( $body['widget_id'] ) ) {
-							$value['widget_id'] = $body['widget_id'];
-						}
-
-						// Merge the agent data over default data.
-						$agent_data = array_merge( $body, $agent_data );
-					}
-				}
-			}
 
 			// If the agent has changed.
-			if ( $agent_new !== $agent_old && 200 === $code ) {
+			if ( $agent_new !== $agent_old ) {
+
+				// Start agent data to merge.
+				$agent_data = [
+					'id'          => $aimodel_id,
+					'name'        => $name,
+					'description' => $desc,
+					'persona'     => $persona,
+					'feed_url'    => $feed_url,
+					'type'        => 'wordpress', // Required to update an agent.
+				];
+
 				// Set up the API url.
-				$url  = 'https://api.dappier.com/v1/integrations/agent';
+				$url = 'https://api.dappier.com/v1/integrations/agent';
 
 				// Set up the request arguments.
 				$args = [
@@ -1436,7 +1535,11 @@ class Dappier_Settings {
 				// Check for errors.
 				if ( 200 !== $code ) {
 					// Get message.
-					$message = isset( $response['response']['message'] ) ? $response['response']['message'] : __( 'An error occurred while processing the request.', 'dappier' );
+					if ( is_wp_error( $response ) ) {
+						$message = $response->get_error_message();
+					} else {
+						$message = isset( $response['response']['message'] ) ? $response['response']['message'] : __( 'An error occurred while processing the request.', 'dappier' );
+					}
 
 					// Add a settings error with a unique error code.
 					add_settings_error(
@@ -1446,6 +1549,14 @@ class Dappier_Settings {
 						'error'
 					);
 				}
+
+				// Add a settings success notice.
+				add_settings_error(
+					'dappier',
+					'update_agent_success',
+					__( 'Agent updated successfully.', 'dappier' ),
+					'updated'
+				);
 			}
 		}
 
@@ -1458,7 +1569,7 @@ class Dappier_Settings {
 		$value['aimodel_id'] = '';
 
 		// Bail if no agent data.
-		if ( ! ( $name && $desc && $pers ) ) {
+		if ( ! ( $name && $desc && $persona ) ) {
 			// Add a settings error with a unique error code.
 			add_settings_error(
 				'dappier',
@@ -1473,10 +1584,12 @@ class Dappier_Settings {
 		// Check for agent submission.
 		$agent = $this->create_agent(
 			[
-				'api_key' => $api_key,
-				'name'    => $name,
-				'desc'    => $desc,
-				'persona' => $pers,
+				'api_key'  => $api_key,
+				'name'     => $name,
+				'desc'     => $desc,
+				'persona'  => $persona,
+				'feed_url' => $feed_url,
+				'type'     => 'wordpress',
 			]
 		);
 
@@ -1496,6 +1609,10 @@ class Dappier_Settings {
 
 			if ( isset( $agent['widget_id'] ) ) {
 				$value['widget_id'] = $agent['widget_id'];
+			}
+
+			if ( isset( $agent['feed_url'] ) ) {
+				$value['feed_url'] = $agent['feed_url'];
 			}
 		}
 
@@ -1538,7 +1655,11 @@ class Dappier_Settings {
 		// Check for errors.
 		if ( 200 !== $code ) {
 			// Get message.
-			$message = isset( $response['response']['message'] ) ? $response['response']['message'] : __( 'An error occurred while processing the request.', 'dappier' );
+			if ( is_wp_error( $response ) ) {
+				$message = $response->get_error_message();
+			} else {
+				$message = isset( $response['response']['message'] ) ? $response['response']['message'] : __( 'An error occurred while processing the request.', 'dappier' );
+			}
 
 			// Add a settings error with a unique error code.
 			add_settings_error(
@@ -1561,7 +1682,7 @@ class Dappier_Settings {
 	 *
 	 * @param array $data The agent data.
 	 *
-	 * @return void
+	 * @return mixed
 	 */
 	function create_agent( $data ) {
 		// Set up the API url and body.
@@ -1593,7 +1714,11 @@ class Dappier_Settings {
 		// Check for errors.
 		if ( 200 !== $code ) {
 			// Get message.
-			$message = isset( $response['response']['message'] ) ? $response['response']['message'] : __( 'An error occurred while processing the request.', 'dappier' );
+			if ( is_wp_error( $response ) ) {
+				$message = $response->get_error_message();
+			} else {
+				$message = isset( $response['response']['message'] ) ? $response['response']['message'] : __( 'An error occurred while processing the request.', 'dappier' );
+			}
 
 			// Add a settings error with a unique error code.
 			add_settings_error(
@@ -1603,6 +1728,14 @@ class Dappier_Settings {
 				'error'
 			);
 		}
+
+		// Add a settings success notice.
+		add_settings_error(
+			'dappier',
+			'create_agent_success',
+			__( 'Agent created successfully.', 'dappier' ),
+			'updated'
+		);
 
 		return $body;
 	}
