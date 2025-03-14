@@ -220,30 +220,31 @@ class Dappier_Endpoints {
 		// Get the authorization header.
 		$auth_header = $request->get_header('Authorization');
 
-		// Bail if no authorization header.
-		if ( ! $auth_header ) {
+		// Bail if no headers.
+		if ( ! isset( $auth_header ) ) {
+			// If authorization header is missing
 			return new WP_Error( 'rest_forbidden', 'Authorization header missing.', [ 'status' => 403 ] );
 		}
 
-		// Extract the Bearer token.
-		list( $type, $token ) = explode( ' ', $auth_header, 2 );
+		// Extract the Bearer token from the Authorization header.
+		list( $type, $token ) = explode( ' ', reset( $auth_header ), 2 );
 
 		// Bearer token should start with 'Bearer'.
 		if ( 'Bearer' !== $type ) {
 			return new WP_Error( 'rest_forbidden', 'Invalid authentication method. Use Bearer token.', [ 'status' => 403 ] );
 		}
 
-		// Get the base API key.
-		$api_key = dappier_get_option( 'datamodel_id' );
+		// Get Data Model ID key.
+		$datamodel_id = dappier_get_option( 'datamodel_id' );
 
 		// Bail if no API key.
-		if ( ! $api_key ) {
-			return new WP_Error( 'rest_forbidden', 'Missing API key.', [ 'status' => 403 ] );
+		if ( ! $datamodel_id ) {
+			return new WP_Error( 'rest_forbidden', 'Data Model API key is missing.', [ 'status' => 403 ] );
 		}
 
-		// Bail if token does not match.
-		if ( $token !== $api_key ) {
-			return new WP_Error( 'rest_forbidden', 'Invalid API key.', [ 'status' => 403 ] );
+		// Bail if token does not match the API key.
+		if ( $token !== $datamodel_id ) {
+			return new WP_Error( 'rest_forbidden', 'Token Mismatch.', [ 'status' => 403 ] );
 		}
 
 		return true;
