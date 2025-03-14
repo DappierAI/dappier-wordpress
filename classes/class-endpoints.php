@@ -234,16 +234,15 @@ class Dappier_Endpoints {
 		}
 
 		// Get the base API key.
-		$api_keys = array_filter( (array) dappier_get_option( 'datamodel_id' ) );
+		$api_key = dappier_get_option( 'datamodel_id' );
 
-		// Allow filtering for multiple tokens
-		$api_keys = apply_filters( 'dappier_api_keys', $api_keys );
+		// Bail if no API key.
+		if ( ! $api_key ) {
+			return new WP_Error( 'rest_forbidden', 'Missing API key.', [ 'status' => 403 ] );
+		}
 
-		// Sanitize all keys after filtering
-		$api_keys = array_map( 'sanitize_text_field', $api_keys );
-
-		// Bail if no API keys or token does not match.
-		if ( ! $api_keys || ! in_array( $token, $api_keys, true ) ) {
+		// Bail if token does not match.
+		if ( $token !== $api_key ) {
 			return new WP_Error( 'rest_forbidden', 'Invalid API key.', [ 'status' => 403 ] );
 		}
 
