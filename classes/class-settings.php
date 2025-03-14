@@ -523,6 +523,7 @@ class Dappier_Settings {
 	function agent_name_callback() {
 		$value    = dappier_get_option( 'agent_name' );
 		$selected = $this->get_agent_value( 'name' );
+		$default  = $this->agent_defaults( 'name' );
 
 		// If we have a selected agent name.
 		if ( $selected ) {
@@ -534,14 +535,14 @@ class Dappier_Settings {
 		// No selected agent name and no value.
 		elseif ( ! $value ) {
 			// Set the value.
-			$value = get_bloginfo( 'name' );
+			$value = $default;
 		}
 
 		echo '<div class="dappier-step__inside agent_name">';
 			printf( '<label class="dappier-step__label" for="dappier[agent_name]">%s</label>', __( 'Name (required)', 'dappier' ) );
 			printf( '<p class="dappier-step__desc">%s</p>', __( 'Give your AI agent a name.', 'dappier' ) );
 			printf( '<input class="dappier-step__input" type="text" name="dappier[agent_name]" id="agent_name" placeholder="%s" value="%s">',
-				get_bloginfo( 'name' ),
+				$default,
 				$value
 			);
 		echo '</div>';
@@ -557,6 +558,7 @@ class Dappier_Settings {
 	function agent_desc_callback() {
 		$value    = dappier_get_option( 'agent_desc' );
 		$selected = $this->get_agent_value( 'description' );
+		$default  = $this->agent_defaults( 'desc' );
 
 		// If we have a selected agent description.
 		if ( $selected ) {
@@ -568,14 +570,14 @@ class Dappier_Settings {
 		// No selected agent description and no value.
 		elseif ( ! $value ) {
 			// Set the value.
-			$value = sprintf( __( 'You are a knowledgeable and helpful guide, providing insights and answers about the content, news, trends, and/or topics relevant to %s.', 'dappier' ), home_url() );
+			$value = $default;
 		}
 
 		echo '<div class="dappier-step__inside agent_desc">';
 			printf( '<label class="dappier-step__label" for="dappier[agent_desc]">%s</label>', __( 'Description (required)', 'dappier' ) );
 			printf( '<p class="dappier-step__desc">%s</p>', __( 'Add a short description of what this AI Agent can do.', 'dappier' ) );
 			printf( '<textarea id="agent_desc" class="dappier-step__input" name="dappier[agent_desc]" rows="5" placeholder="%s">%s</textarea>',
-				$value,
+				$default,
 				$value
 			);
 		echo '</div>';
@@ -589,8 +591,9 @@ class Dappier_Settings {
 	 * @return void
 	 */
 	function agent_persona_callback() {
-		$value = dappier_get_option( 'agent_persona' );
+		$value    = dappier_get_option( 'agent_persona' );
 		$selected = $this->get_agent_value( 'persona' );
+		$default  = $this->agent_defaults( 'persona' );
 
 		// If we have a selected agent persona.
 		if ( $selected ) {
@@ -602,14 +605,14 @@ class Dappier_Settings {
 		// No selected agent persona and no value.
 		elseif ( ! $value ) {
 			// Set the value.
-			$value = sprintf( __( 'Use the available content sources and respond in a friendly, knowledgeable, and helpful manner. Provide valid answers to questions and assist users with questions related to %s only, and redirect or politely decline off-topic queries.', 'dappier' ), home_url() );
+			$value = $default;
 		}
 
 		echo '<div class="dappier-step__inside agent_persona">';
 			printf( '<label class="dappier-step__label" for="dappier[agent_persona]">%s</label>', __( 'Persona (required)', 'dappier' ) );
 			printf( '<p class="dappier-step__desc">%s</p>', __( 'How should this AI Agent answer questions? What does it do? What should it not do?', 'dappier' ) );
 			printf( '<textarea class="dappier-step__input" name="dappier[agent_persona]" id="agent_persona" rows="5" placeholder="%s">%s</textarea>',
-				__( 'Use the available content sources and respond in a friendly manner.', 'dappier' ),
+				$default,
 				$value
 			);
 		echo '</div>';
@@ -1738,6 +1741,28 @@ class Dappier_Settings {
 		);
 
 		return $body;
+	}
+
+	/**
+	 * Get the agent defaults.
+	 *
+	 * @since TBD
+	 *
+	 * @return array
+	 */
+	function agent_defaults( $key = null ) {
+		$defaults = [
+			'name'    => __( 'Ask', 'dappier' ) . ' ' . get_bloginfo( 'name' ),
+			'desc'    => sprintf( __( 'You are a knowledgeable and helpful guide, providing insights and answers about the content, news, trends, and/or topics relevant to %s.', 'dappier' ), home_url() ),
+			'persona' => sprintf( __( 'Use the available content sources and respond in a friendly, knowledgeable, and helpful manner. Provide valid answers to questions and assist users with questions related to %s only, and redirect or politely decline off-topic queries.', 'dappier' ), home_url() ),
+		];
+
+		// Return the default value.
+		if ( $key ) {
+			return isset( $defaults[ $key ] ) ? $defaults[ $key ] : null;
+		}
+
+		return $defaults;
 	}
 
 	/**
