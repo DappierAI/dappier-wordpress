@@ -428,7 +428,7 @@ class Dappier_Settings {
 			}
 		}
 
-		printf( '<input type="text" name="dappier[datamodel_id]" id="datamodel_id" value="%s">', esc_attr( $datamodel_id ) );
+		printf( '<input type="hidden" name="dappier[datamodel_id]" id="datamodel_id" value="%s">', esc_attr( $datamodel_id ) );
 	}
 
 	/**
@@ -453,7 +453,7 @@ class Dappier_Settings {
 			}
 		}
 
-		printf( '<input type="text" name="dappier[external_dm_id]" id="external_dm_id" value="%s">', esc_attr( $external_dm_id ) );
+		printf( '<input type="hidden" name="dappier[external_dm_id]" id="external_dm_id" value="%s">', esc_attr( $external_dm_id ) );
 	}
 
 	/**
@@ -478,7 +478,7 @@ class Dappier_Settings {
 			}
 		}
 
-		printf( '<input type="text" name="dappier[widget_id]" id="widget_id" value="%s">', esc_attr( $widget_id ) );
+		printf( '<input type="hidden" name="dappier[widget_id]" id="widget_id" value="%s">', esc_attr( $widget_id ) );
 	}
 
 	/**
@@ -509,7 +509,7 @@ class Dappier_Settings {
 			$feed_url = home_url( '/wp-json/dappier/v1/posts' );
 		}
 
-		printf( '<input type="text" name="dappier[feed_url]" id="feed_url" value="%s">', esc_attr( $feed_url ) );
+		printf( '<input type="hidden" name="dappier[feed_url]" id="feed_url" value="%s">', esc_attr( $feed_url ) );
 	}
 
 
