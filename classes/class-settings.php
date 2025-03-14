@@ -440,13 +440,13 @@ class Dappier_Settings {
 	 */
 	function external_dm_id_callback() {
 		$external_dm_id = dappier_get_option( 'external_dm_id' );
-		$selected     = $this->get_agent_value( 'external_dm_id' );
+		$selected       = $this->get_agent_value( 'external_dm_id' );
 
 		// If we have a selected external dm id.
 		if ( $selected ) {
 			if ( ! $external_dm_id || $external_dm_id !== $selected ) {
 				// Update the external dm id.
-				dappier_update_option( 'feed_url', $selected );
+				dappier_update_option( 'external_dm_id', $selected );
 
 				// Set the value.
 				$external_dm_id = $selected;
@@ -471,7 +471,7 @@ class Dappier_Settings {
 		if ( $selected ) {
 			if ( ! $widget_id || $widget_id !== $selected ) {
 				// Update the widget id.
-				dappier_update_option( 'feed_url', $selected );
+				dappier_update_option( 'widget_id', $selected );
 
 				// Set the value.
 				$widget_id = $selected;
@@ -558,7 +558,7 @@ class Dappier_Settings {
 	function agent_desc_callback() {
 		$value    = dappier_get_option( 'agent_desc' );
 		$selected = $this->get_agent_value( 'description' );
-		$default  = $this->agent_defaults( 'desc' );
+		$default  = $this->agent_defaults( 'description' );
 
 		// If we have a selected agent description.
 		if ( $selected ) {
@@ -1591,7 +1591,7 @@ class Dappier_Settings {
 				'name'     => $name,
 				'desc'     => $desc,
 				'persona'  => $persona,
-				'feed_url' => $feed_url,
+				'feed_url' => $feed_url ?: home_url( '/wp-json/dappier/v1/posts' ),
 				'type'     => 'wordpress',
 			]
 		);
@@ -1752,9 +1752,9 @@ class Dappier_Settings {
 	 */
 	function agent_defaults( $key = null ) {
 		$defaults = [
-			'name'    => __( 'Ask', 'dappier' ) . ' ' . get_bloginfo( 'name' ),
-			'desc'    => sprintf( __( 'You are a knowledgeable and helpful guide, providing insights and answers about the content, news, trends, and/or topics relevant to %s.', 'dappier' ), home_url() ),
-			'persona' => sprintf( __( 'Use the available content sources and respond in a friendly, knowledgeable, and helpful manner. Provide valid answers to questions and assist users with questions related to %s only, and redirect or politely decline off-topic queries.', 'dappier' ), home_url() ),
+			'name'        => __( 'Ask', 'dappier' ) . ' ' . get_bloginfo( 'name' ),
+			'description' => sprintf( __( 'You are a knowledgeable and helpful guide, providing insights and answers about the content, news, trends, and/or topics relevant to %s.', 'dappier' ), home_url() ),
+			'persona'     => sprintf( __( 'Use the available content sources and respond in a friendly, knowledgeable, and helpful manner. Provide valid answers to questions and assist users with questions related to %s only, and redirect or politely decline off-topic queries.', 'dappier' ), home_url() ),
 		];
 
 		// Return the default value.

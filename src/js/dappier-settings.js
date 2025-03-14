@@ -4,6 +4,7 @@ document.addEventListener( 'DOMContentLoaded', function() {
 	const agentNameInput    = document.getElementById('agent_name');
 	const agentDescInput    = document.getElementById('agent_desc');
 	const agentPersonaInput = document.getElementById('agent_persona');
+	const agentFeedUrlInput = document.getElementById('feed_url');
 	const branding          = document.getElementById('askai_branding');
 	const logo              = document.querySelector('.askai_logo');
 	const logoField         = document.querySelector('.askai_logo .dappier-media__upload');
@@ -41,6 +42,7 @@ document.addEventListener( 'DOMContentLoaded', function() {
 				agentNameInput.value    = agentNameInput.placeholder;
 				agentDescInput.value    = agentDescInput.placeholder;
 				agentPersonaInput.value = agentPersonaInput.placeholder;
+				agentFeedUrlInput.value = agentFeedUrlInput.placeholder;
 			}
 			// Selecting an existing, get the agent data.
 			else {
@@ -64,6 +66,7 @@ document.addEventListener( 'DOMContentLoaded', function() {
 							agentNameInput.value    = response.data.name;
 							agentDescInput.value    = response.data.description;
 							agentPersonaInput.value = response.data.persona;
+							agentFeedUrlInput.value = response.data.feed_url;
 						}
 
 						// Re-enable fields.
