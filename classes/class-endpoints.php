@@ -145,7 +145,7 @@ class Dappier_Endpoints {
 				global $post;
 				$post_id = $post->ID;
 				$content = $this->get_content( get_the_content( null, false, $post_id ) );
-				$excerpt = $post->post_excerpt ? $post->post_excerpt : wp_trim_words( $content, 55, '...' );
+				$excerpt = has_excerpt( $post_id ) ? $post->post_excerpt : wp_trim_words( $content, 55, '...' );
 
 				// Add custom data to each post.
 				$data[] = [
