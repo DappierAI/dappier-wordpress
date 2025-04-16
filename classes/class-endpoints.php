@@ -142,12 +142,10 @@ class Dappier_Endpoints {
 				$query->the_post();
 
 				// Get the post ID.
-				$post_id = get_the_ID();
-
-				// Get the post content, the same way `the_content()` does.
-				$content = get_the_content();
-				$content = apply_filters( 'the_content', $content );
-				$content = str_replace( ']]>', ']]&gt;', $content );
+				global $post;
+				$post_id = $post->ID;
+				$content = $this->get_content( get_the_content( null, false, $post_id ) );
+				$excerpt = $post->post_excerpt ? $post->post_excerpt : wp_trim_words( $content, 55, '...' );
 
 				// Add custom data to each post.
 				$data[] = [
@@ -159,7 +157,7 @@ class Dappier_Endpoints {
 					'date_modified'  => get_the_modified_date( 'c' ),
 					'author'         => get_the_author(),
 					'featured_image' => (string) get_the_post_thumbnail_url( $post_id, 'full' ),
-					'excerpt'        => get_the_excerpt(),
+					'excerpt'        => $excerpt,
 					'content'        => $content,
 					'categories'     => $this->get_terms( $post_id, 'category' ),
 					'tags'           => $this->get_terms( $post_id, 'post_tag' ),
@@ -182,6 +180,39 @@ class Dappier_Endpoints {
 		];
 
 		return new WP_REST_Response( $response, 200 );
+	}
+
+	/**
+	 * Process the content.
+	 * Originally taken from Mai Theme's `mai_get_processed_content()` helper function.
+	 *
+	 * @since TBD
+	 *
+	 * @param string $content The content of the post.
+	 *
+	 * @return string
+	 */
+	function get_content( $content ) {
+		/**
+		 * Embed.
+		 *
+		 * @var WP_Embed $wp_embed Embed object.
+		 */
+		global $wp_embed;
+
+		$blocks  = has_blocks( $content );
+		$content = $wp_embed->autoembed( $content );            // WP runs priority 8.
+		$content = $wp_embed->run_shortcode( $content );        // WP runs priority 8.
+		$content = $blocks ? do_blocks( $content ) : $content;  // WP runs priority 9.
+		$content = wptexturize( $content );                     // WP runs priority 10.
+		$content = ! $blocks ? wpautop( $content ) : $content;  // WP runs priority 10.
+		$content = shortcode_unautop( $content );               // WP runs priority 10.
+		$content = do_shortcode( $content );                    // WP runs priority 11.
+		$content = wp_filter_content_tags( $content );          // WP runs priority 12.
+		$content = convert_smilies( $content );                 // WP runs priority 20.
+		$content = str_replace( ']]>', ']]&gt;', $content );
+
+		return $content;
 	}
 
 	/**
@@ -218,7 +249,7 @@ class Dappier_Endpoints {
 	 */
 	function authenticate_request( $request ) {
 		// Get the authorization header.
-		$auth_header = $request->get_header('Authorization');
+		$auth_header = $request->get_header( 'Authorization' );
 
 		// Bail if no headers.
 		if ( ! isset( $auth_header ) ) {
