@@ -50,6 +50,13 @@ The Dappier plugin allows you to add an AI-powered AskAI module to your WordPres
 - Ensure that the Dappier plugin is properly configured in the settings page.
 - Check the console for any JavaScript errors if the widget is not displaying correctly.
 
+## Agents
+
+- **id**: The AI agent ID (the LLM). This is `aimodel_id` in the dappier options array values.
+- **datamodel_id**: The internal data model ID, typically not exposed. This is used as the authorization header for WordPress feed ingestion. This is `datamodel_id` in the dappier options array values.
+- **external_dm_id**: The externalized data model ID. Use this ID when making search calls for semantic results. This is `external_dm_id` in the dappier options array values.
+- **widget_id**: The ID of the AskAI widget, which can be embedded on a page and is associated with a specific agent ID. This is `widget_id` in the dappier options array values.
+
 ## Support
 
 For support, please visit the [Dappier Support Page](https://docs.dappier.com/wordpress).
